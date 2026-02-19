@@ -41,7 +41,7 @@ export default function Hero() {
 
   const stats = [
     { value: 20, suffix: "M+", label: "Capsulas / Ano" },
-    { value: 15, suffix: "+", label: "Anos Experiencia" },
+    { value: 15, suffix: "+", label: "Años Experiencia" },
     { value: 98, suffix: "%", label: "Satisfaccion" },
     { value: 3, suffix: "", label: "Certificaciones" },
   ]

@@ -37,7 +37,7 @@ export default function About() {
               Nuestra Trayectoria
             </span>
 
-            <h2 className="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-8 leading-[1.1]">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-8 leading-[1.1]">
               Con alcance <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-teal/70">global</span>, <br />
               operamos desde <span className="relative inline-block">
                 1998
@@ -129,7 +129,7 @@ export default function About() {
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="text-4xl font-serif font-bold text-teal">25+</span>
+              <span className="text-4xl font-heading font-bold text-teal">25+</span>
               <p className="text-xs font-bold uppercase tracking-wider text-charcoal/80 mt-1">Anos de Experiencia Global</p>
             </motion.div>
 

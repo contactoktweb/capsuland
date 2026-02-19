@@ -90,7 +90,7 @@ export default function Hero() {
           {/* Large Display Typography - Innovative Style */}
           <div className="max-w-5xl">
             <motion.h1
-              className="font-serif text-6xl sm:text-7xl md:text-8xl lg:text-[7rem] xl:text-[9rem] font-bold leading-[0.85] tracking-tight"
+              className="text-6xl sm:text-7xl md:text-8xl lg:text-[7rem] xl:text-[9rem] font-bold leading-[0.85] tracking-tight"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.3 }}
@@ -192,7 +192,7 @@ export default function Hero() {
                 className={`flex items-center gap-4 py-6 md:py-8 px-4 ${i < stats.length - 1 ? "md:border-r md:border-white/15" : ""
                   } ${i < 2 ? "border-b md:border-b-0 border-white/15" : ""}`}
               >
-                <span className="text-2xl md:text-3xl font-serif font-bold text-orange drop-shadow-[0_1px_6px_rgba(242,140,40,0.4)]">
+                <span className="text-2xl md:text-3xl font-heading font-bold text-orange drop-shadow-[0_1px_6px_rgba(242,140,40,0.4)]">
                   <AnimatedCounter target={stat.value} suffix={stat.suffix} />
                 </span>
                 <span className="text-xs text-white/80 uppercase tracking-wider leading-tight font-sans">

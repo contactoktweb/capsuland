@@ -28,7 +28,7 @@ export default function Services() {
             <span className="w-2 h-2 rounded-full bg-teal" />
             Nuestros Servicios
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-charcoal max-w-2xl text-balance">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal max-w-2xl text-balance">
             Soluciones integrales en capsula blanda
           </h2>
         </motion.div>
@@ -44,7 +44,7 @@ export default function Services() {
               <div className="w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center mb-4">
                 <Factory className="w-6 h-6 text-teal" />
               </div>
-              <h3 className="font-serif text-2xl font-bold text-charcoal mb-2">
+              <h3 className="text-2xl font-bold text-charcoal mb-2">
                 Maquila y Desarrollo
               </h3>
               <p className="text-charcoal/60 text-sm leading-relaxed max-w-md mb-4">
@@ -86,7 +86,7 @@ export default function Services() {
               <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3">
                 <Pill className="w-5 h-5 text-white" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-white mb-1">
+              <h3 className="text-xl font-bold text-white mb-1">
                 Medicamentos
               </h3>
               <p className="text-white/70 text-sm leading-relaxed">
@@ -106,7 +106,7 @@ export default function Services() {
               <div className="w-12 h-12 rounded-xl bg-orange/10 flex items-center justify-center mb-4">
                 <Leaf className="w-6 h-6 text-orange" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-charcoal mb-2">
+              <h3 className="text-xl font-bold text-charcoal mb-2">
                 Suplementos
               </h3>
               <p className="text-charcoal/60 text-sm leading-relaxed">
@@ -126,7 +126,7 @@ export default function Services() {
               <div className="w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center mb-4">
                 <FileText className="w-6 h-6 text-teal" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-charcoal mb-2">
+              <h3 className="text-xl font-bold text-charcoal mb-2">
                 Asuntos Regulatorios
               </h3>
               <p className="text-charcoal/60 text-sm leading-relaxed">

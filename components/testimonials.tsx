@@ -57,7 +57,7 @@ export default function Testimonials() {
               <span className="inline-block px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-xs font-medium tracking-widest uppercase mb-6 backdrop-blur-sm">
                 Experiencias
               </span>
-              <h2 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-2">
+              <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-2">
                 4.9
                 <span className="text-2xl text-white/50 font-sans font-normal ml-2">/ 5.0</span>
               </h2>
@@ -108,7 +108,7 @@ export default function Testimonials() {
             >
               <Quote className="absolute -top-10 -left-6 w-32 h-32 text-teal/5 rotate-180 pointer-events-none" />
 
-              <h3 className="relative font-serif text-3xl md:text-4xl lg:text-5xl leading-tight text-charcoal mb-8 italic">
+              <h3 className="relative text-3xl md:text-4xl lg:text-5xl leading-tight text-charcoal mb-8 italic">
                 "{testimonials[active].text}"
               </h3>
 
@@ -133,7 +133,7 @@ export default function Testimonials() {
                   <p className={`text-sm font-bold mb-1 transition-colors ${active === i ? "text-teal" : "text-charcoal"}`}>
                     0{i + 1}
                   </p>
-                  <p className="font-serif text-lg font-medium text-charcoal group-hover:text-teal transition-colors">
+                  <p className="text-lg font-medium text-charcoal group-hover:text-teal transition-colors">
                     {t.company}
                   </p>
                 </button>

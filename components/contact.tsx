@@ -51,7 +51,7 @@ export default function Contact() {
             <span className="w-2 h-2 rounded-full bg-teal" />
             Contacto
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-white text-balance">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-balance">
             Hablemos de tu proyecto
           </h2>
         </motion.div>
@@ -65,7 +65,7 @@ export default function Contact() {
           <div className="grid md:grid-cols-2 gap-12">
             {/* Left: Contact info */}
             <div className="flex flex-col gap-6">
-              <h3 className="font-serif text-xl font-bold text-white mb-2">
+              <h3 className="text-xl font-bold text-white mb-2">
                 Informacion de Contacto
               </h3>
               <p className="text-white/60 text-sm leading-relaxed">

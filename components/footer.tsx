@@ -37,7 +37,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-serif text-sm font-bold text-white mb-4 uppercase tracking-wider">
+            <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">
               Enlaces
             </h4>
             <ul className="flex flex-col gap-3">
@@ -56,7 +56,7 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="font-serif text-sm font-bold text-white mb-4 uppercase tracking-wider">
+            <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">
               Servicios
             </h4>
             <ul className="flex flex-col gap-3">
@@ -70,7 +70,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-serif text-sm font-bold text-white mb-4 uppercase tracking-wider">
+            <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">
               Contacto
             </h4>
             <div className="flex flex-col gap-4">

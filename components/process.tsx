@@ -49,16 +49,25 @@ const fadeUp = {
 
 export default function Process() {
   return (
-    <section id="proceso" className="py-24 md:py-32 bg-white">
+    <section id="proceso" className="py-24 md:py-32 bg-white relative overflow-hidden">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: "radial-gradient(#0f2926 1px, transparent 1px)",
+          backgroundSize: "32px 32px"
+        }}
+      />
+      {/* Decorative background blob */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-teal/5 rounded-full blur-3xl pointer-events-none" />
       <div className="mx-auto max-w-7xl px-6">
-        <div className="grid md:grid-cols-[1fr_2fr] gap-16">
+        <div className="grid md:grid-cols-2 gap-16">
           {/* Left: Sticky Title */}
           <motion.div {...fadeUp} className="md:sticky md:top-32 md:self-start">
             <span className="inline-flex items-center gap-2 text-xs font-medium tracking-widest uppercase text-teal mb-4">
               <span className="w-2 h-2 rounded-full bg-teal" />
               Metodologia
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-charcoal mb-4 text-balance">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-4">
               Nuestro Proceso
             </h2>
             <p className="text-charcoal/60 leading-relaxed">
@@ -91,7 +100,7 @@ export default function Process() {
 
                   {/* Content */}
                   <div className="flex-1 pb-2">
-                    <h3 className="font-serif text-lg font-bold text-charcoal mb-1">
+                    <h3 className="text-lg font-bold text-charcoal mb-1">
                       {step.title}
                     </h3>
                     <p className="text-sm text-charcoal/60 leading-relaxed">

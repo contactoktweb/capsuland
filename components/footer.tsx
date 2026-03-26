@@ -1,21 +1,25 @@
-import { MapPin, Phone, Mail } from "lucide-react"
+import Link from "next/link"
+import { Icon } from "@iconify/react"
 
 const quickLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Proceso", href: "#proceso" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Inicio", href: "/", icon: "ph:house-light" },
+  { label: "Tienda", href: "/tienda", icon: "ph:storefront-light" },
+  { label: "Servicios", href: "/#servicios", icon: "ph:flask-light" },
+  { label: "Nosotros", href: "/#nosotros", icon: "ph:users-light" },
+  { label: "Proceso", href: "/#proceso", icon: "ph:gear-six-light" },
+  { label: "Contacto", href: "/#contacto", icon: "ph:envelope-light" },
 ]
 
 const services = [
-  "Maquila y Desarrollo",
-  "Medicamentos",
-  "Suplementos Dietarios",
-  "Asuntos Regulatorios",
+  { label: "Maquila y Desarrollo", icon: "ph:factory-light" },
+  { label: "Medicamentos", icon: "ph:pill-light" },
+  { label: "Suplementos Dietarios", icon: "ph:leaf-light" },
+  { label: "Asuntos Regulatorios", icon: "ph:clipboard-text-light" },
 ]
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-charcoal border-t border-white/5">
       <div className="mx-auto max-w-7xl px-6 py-16">
@@ -43,12 +47,13 @@ export default function Footer() {
             <ul className="flex flex-col gap-3">
               {quickLinks.map((link) => (
                 <li key={link.href}>
-                  <a
+                  <Link
                     href={link.href}
-                    className="text-sm text-white/50 hover:text-teal transition-colors"
+                    className="text-sm text-white/50 hover:text-teal transition-colors flex items-center gap-2"
                   >
+                    <Icon icon={link.icon} className="w-4 h-4" />
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -61,8 +66,11 @@ export default function Footer() {
             </h4>
             <ul className="flex flex-col gap-3">
               {services.map((s) => (
-                <li key={s}>
-                  <span className="text-sm text-white/50">{s}</span>
+                <li key={s.label}>
+                  <span className="text-sm text-white/50 flex items-center gap-2">
+                    <Icon icon={s.icon} className="w-4 h-4" />
+                    {s.label}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -75,17 +83,17 @@ export default function Footer() {
             </h4>
             <div className="flex flex-col gap-4">
               <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-teal mt-0.5 shrink-0" />
+                <Icon icon="ph:map-pin-light" className="w-4 h-4 text-teal mt-0.5 shrink-0" />
                 <span className="text-sm text-white/50">
                   Km 3.5 Via Funza - Cota, Costado Sur
                 </span>
               </div>
               <a href="tel:+573103047673" className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors">
-                <Phone className="w-4 h-4 text-teal shrink-0" />
+                <Icon icon="ph:phone-light" className="w-4 h-4 text-teal shrink-0" />
                 <span className="text-sm">310 304 7673</span>
               </a>
               <a href="mailto:comercial1@capsuland.com" className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors">
-                <Mail className="w-4 h-4 text-teal shrink-0" />
+                <Icon icon="ph:envelope-light" className="w-4 h-4 text-teal shrink-0" />
                 <span className="text-sm">comercial1@capsuland.com</span>
               </a>
             </div>
@@ -94,9 +102,19 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/30">
-            {'2026 CAPSULAND. Todos los derechos reservados.'}
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <p className="text-xs text-white/30">
+              {currentYear} CAPSULAND. Todos los derechos reservados.
+            </p>
+            <a
+              href="https://www.kytcode.lat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-white/30 hover:text-white/50 transition-colors flex items-center gap-1"
+            >
+              Desarrollado por K&T <Icon icon="ph:heart-fill" className="w-3 h-3 text-white" />
+            </a>
+          </div>
           <div className="flex gap-6">
             <span className="text-xs text-white/30 hover:text-white/50 transition-colors cursor-pointer">
               Politica de Privacidad

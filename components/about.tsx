@@ -40,13 +40,13 @@ export default function About() {
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-8 leading-[1.1]">
               Con alcance <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-teal/70">global</span>, <br />
               operamos desde <span className="relative inline-block">
-                1998
+                2011
                 <span className="absolute bottom-1 left-0 w-full h-3 bg-orange/20 -z-10 rounded-sm" />
               </span>.
             </h2>
 
             <p className="text-lg text-charcoal/70 leading-relaxed mb-8 border-l-4 border-orange pl-6 italic">
-              "Creemos que todos merecen sentirse seguros y empoderados cada dia. Nuestra mision es fabricar productos de calidad excepcional."
+              "Somos el aliado estrategico que garantiza calidad y respaldo continuo para su negocio."
             </p>
 
             <div className="space-y-6 mb-10">

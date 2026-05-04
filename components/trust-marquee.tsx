@@ -3,9 +3,7 @@
 const certifications = [
   "INVIMA",
   "BPM",
-  "ISO 9001",
-  "FDA Compliance",
-  "GMP Certified",
+  "FDA",
   "Registro Sanitario",
 ]
 

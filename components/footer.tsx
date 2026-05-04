@@ -12,7 +12,6 @@ const quickLinks = [
 
 const services = [
   { label: "Maquila y Desarrollo", icon: "ph:factory-light" },
-  { label: "Medicamentos", icon: "ph:pill-light" },
   { label: "Suplementos Dietarios", icon: "ph:leaf-light" },
   { label: "Asuntos Regulatorios", icon: "ph:clipboard-text-light" },
 ]
@@ -85,16 +84,20 @@ export default function Footer() {
               <div className="flex items-start gap-3">
                 <Icon icon="ph:map-pin-light" className="w-4 h-4 text-teal mt-0.5 shrink-0" />
                 <span className="text-sm text-white/50">
-                  Km 3.5 Via Funza - Cota, Costado Sur
+                  Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B
                 </span>
               </div>
               <a href="tel:+573103047673" className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors">
                 <Icon icon="ph:phone-light" className="w-4 h-4 text-teal shrink-0" />
                 <span className="text-sm">310 304 7673</span>
               </a>
-              <a href="mailto:comercial1@capsuland.com" className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors">
+              <a href="mailto:comercial2@capsuland.com" className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors">
                 <Icon icon="ph:envelope-light" className="w-4 h-4 text-teal shrink-0" />
-                <span className="text-sm">comercial1@capsuland.com</span>
+                <span className="text-sm">comercial2@capsuland.com</span>
+              </a>
+              <a href="mailto:coordinadorcomercial@capsuland.com" className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors">
+                <Icon icon="ph:envelope-light" className="w-4 h-4 text-teal shrink-0" />
+                <span className="text-sm">coordinadorcomercial@capsuland.com</span>
               </a>
             </div>
           </div>

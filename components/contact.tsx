@@ -1,13 +1,13 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { MapPin, Phone, Mail, Clock, Send } from "lucide-react"
+import { MapPin, Phone, Mail, Send } from "lucide-react"
 
 const contactInfo = [
   {
     icon: MapPin,
     label: "Direccion",
-    value: "Km 3.5 Via Funza - Cota, Costado Sur",
+    value: "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B",
   },
   {
     icon: Phone,
@@ -18,13 +18,14 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "comercial1@capsuland.com",
-    href: "mailto:comercial1@capsuland.com",
+    value: "comercial2@capsuland.com",
+    href: "mailto:comercial2@capsuland.com",
   },
   {
-    icon: Clock,
-    label: "Horario",
-    value: "Lun - Vie: 8:00 AM - 5:00 PM",
+    icon: Mail,
+    label: "Email Comercial",
+    value: "coordinadorcomercial@capsuland.com",
+    href: "mailto:coordinadorcomercial@capsuland.com",
   },
 ]
 

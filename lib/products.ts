@@ -4,7 +4,8 @@ export type ProductCategory =
   | "Proteínas"
   | "Antioxidantes"
   | "Minerales"
-  | "Multivitamínico"
+  | "Minerales y Vitaminas"
+  | "Proteínas y Vitaminas"
   | "Bienestar Digestivo"
   | "Bienestar Femenino"
 
@@ -12,9 +13,10 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   "Vitaminas",
   "Ácidos Grasos",
   "Proteínas",
+  "Proteínas y Vitaminas",
   "Antioxidantes",
   "Minerales",
-  "Multivitamínico",
+  "Minerales y Vitaminas",
   "Bienestar Digestivo",
   "Bienestar Femenino",
 ]
@@ -81,22 +83,6 @@ export const products: Product[] = [
     ],
   },
   {
-    referencia: "CALOSTRO BOVINO",
-    slug: "calostro-bovino",
-    categoria: "Proteínas",
-    registroInvima: "SD2024-0001722-R1",
-    beneficios:
-      "Aporta calostro bovino, fuente natural de proteínas y compuestos bioactivos que contribuyen a complementar la nutrición y al bienestar del sistema inmune.",
-    descripcion:
-      "Fuente natural de proteínas, vitaminas, minerales, ácidos grasos y péptidos bioactivos que contribuyen al soporte nutricional general del organismo. Apoya el equilibrio del sistema inmune y puede favorecer la función digestiva, especialmente en etapas que requieren un mayor aporte nutricional. Contribuye al mantenimiento de la vitalidad y al bienestar general, como parte de una alimentación balanceada.",
-    advertencia:
-      "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
-    modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
-    cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
-    gallery: [],
-  },
-  {
     referencia: "CLA 1000 mg",
     slug: "cla-1000-mg",
     categoria: "Ácidos Grasos",
@@ -138,7 +124,7 @@ export const products: Product[] = [
   {
     referencia: "COLÁGENO 200 mg + BIOTINA 900 mcg",
     slug: "colageno-200-biotina-900",
-    categoria: "Proteínas",
+    categoria: "Proteínas y Vitaminas",
     registroInvima: "SD2020-0004523",
     beneficios:
       "Aporta colágeno y biotina, nutrientes que contribuyen al mantenimiento normal de la piel, el cabello y las uñas.",
@@ -161,7 +147,7 @@ export const products: Product[] = [
   {
     referencia: "COMPLEJO B + ZINC + VITAMINA D3",
     slug: "complejo-b-zinc-vitamina-d3",
-    categoria: "Vitaminas",
+    categoria: "Minerales y Vitaminas",
     registroInvima: "SD2017-0004113",
     beneficios:
       "Aporta vitaminas del complejo B, zinc y vitamina D3, nutrientes que contribuyen al metabolismo energético normal y al funcionamiento normal del sistema nervioso e inmune.",
@@ -255,7 +241,7 @@ export const products: Product[] = [
   {
     referencia: "MULTIVITAMÍNICO CON MINERALES",
     slug: "multivitaminico-minerales",
-    categoria: "Multivitamínico",
+    categoria: "Minerales y Vitaminas",
     registroInvima: "SD2025-0004870",
     beneficios:
       "Contribuye al funcionamiento normal del sistema inmunológico, la salud ósea, la producción de energía celular y el metabolismo de nutrientes.",

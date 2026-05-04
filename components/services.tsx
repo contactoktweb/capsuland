@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Factory, Pill, Leaf, FileText, CheckCircle2 } from "lucide-react"
+import { Factory, Leaf, FileText, CheckCircle2 } from "lucide-react"
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -34,11 +34,11 @@ export default function Services() {
         </motion.div>
 
         {/* Bento Grid */}
-        <div className="grid md:grid-cols-3 gap-6 auto-rows-[280px]">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[280px]">
           {/* Card 1: Large - Maquila */}
           <motion.div
             {...fadeUp}
-            className="md:col-span-2 group relative overflow-hidden rounded-2xl border border-charcoal/5 bg-light p-8 flex flex-col justify-between hover:shadow-xl transition-shadow"
+            className="md:col-span-2 lg:col-span-2 group relative overflow-hidden rounded-2xl border border-charcoal/5 bg-light p-8 flex flex-col justify-between hover:shadow-xl transition-shadow"
           >
             <div>
               <div className="w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center mb-4">
@@ -69,37 +69,10 @@ export default function Services() {
             />
           </motion.div>
 
-          {/* Card 2: Tall - Medicamentos */}
+          {/* Card 2: Standard - Suplementos */}
           <motion.div
             {...fadeUp}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="md:row-span-2 group relative overflow-hidden rounded-2xl border border-charcoal/5 hover:shadow-xl transition-shadow"
-          >
-            <Image
-              src="/images/medicamentos.jpg"
-              alt="Capsulas de medicamentos"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-8">
-              <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3">
-                <Pill className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-1">
-                Medicamentos
-              </h3>
-              <p className="text-white/70 text-sm leading-relaxed">
-                Produccion de medicamentos en capsula blanda con
-                registro INVIMA y cumplimiento normativo.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Card 3: Standard - Suplementos */}
-          <motion.div
-            {...fadeUp}
-            transition={{ duration: 0.5, delay: 0.2 }}
             className="group relative overflow-hidden rounded-2xl border border-charcoal/5 bg-light p-8 flex flex-col justify-between hover:shadow-xl transition-shadow"
           >
             <div>
@@ -111,16 +84,16 @@ export default function Services() {
               </h3>
               <p className="text-charcoal/60 text-sm leading-relaxed">
                 Suplementos dietarios en capsula blanda. Omega-3, vitaminas,
-                antioxidantes y formulaciones naturales.
+                antioxidantes y composiciones integrales.
               </p>
             </div>
           </motion.div>
 
-          {/* Card 4: Standard - Regulatory Affairs */}
+          {/* Card 3: Standard - Regulatory Affairs */}
           <motion.div
             {...fadeUp}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="group relative overflow-hidden rounded-2xl border border-charcoal/5 bg-light p-8 flex flex-col justify-between hover:shadow-xl transition-shadow"
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="lg:col-span-3 group relative overflow-hidden rounded-2xl border border-charcoal/5 bg-light p-8 flex flex-col justify-between hover:shadow-xl transition-shadow"
           >
             <div>
               <div className="w-12 h-12 rounded-xl bg-teal/10 flex items-center justify-center mb-4">
@@ -129,7 +102,7 @@ export default function Services() {
               <h3 className="text-xl font-bold text-charcoal mb-2">
                 Asuntos Regulatorios
               </h3>
-              <p className="text-charcoal/60 text-sm leading-relaxed">
+              <p className="text-charcoal/60 text-sm leading-relaxed max-w-2xl">
                 Gestion de registros sanitarios, permisos INVIMA
                 y cumplimiento de normatividad farmaceutica.
               </p>

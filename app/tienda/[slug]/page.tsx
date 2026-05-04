@@ -254,15 +254,15 @@ export default function ProductDetailPage() {
                 </button>
               </div>
 
-              {/* Advertencia */}
-              <div className="mt-6 bg-amber-50 border border-amber-200/50 rounded-xl p-4">
+              {/* Importante */}
+              <div className="mt-6 bg-teal/5 border border-teal/15 rounded-xl p-4">
                 <div className="flex items-start gap-2">
-                  <Icon icon="ph:warning-light" className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
+                  <Icon icon="ph:info-light" className="w-4 h-4 text-teal mt-0.5 flex-shrink-0" />
                   <div>
-                    <h3 className="text-xs font-bold text-amber-800 mb-1 uppercase tracking-wider">
-                      Advertencia
+                    <h3 className="text-xs font-bold text-teal uppercase tracking-wider mb-1">
+                      Importante
                     </h3>
-                    <p className="text-xs text-amber-700/80 leading-relaxed">
+                    <p className="text-xs text-charcoal/60 leading-relaxed">
                       {product.advertencia}
                     </p>
                   </div>

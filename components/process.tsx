@@ -26,7 +26,7 @@ const steps = [
   {
     num: "05",
     title: "Control de Calidad",
-    desc: "Analisis fisicoquimicos y microbiologicos para garantizar la excelencia.",
+    desc: "Analisis de calidad de producto terminado para garantizar la excelencia.",
   },
   {
     num: "06",

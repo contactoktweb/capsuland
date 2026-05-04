@@ -43,7 +43,7 @@ export default function Hero() {
     { value: 20, suffix: "M+", label: "Capsulas / Ano" },
     { value: 15, suffix: "+", label: "Años Experiencia" },
     { value: 98, suffix: "%", label: "Satisfaccion" },
-    { value: 3, suffix: "", label: "Certificaciones" },
+    { value: 2, suffix: "", label: "Certificaciones" },
   ]
 
   return (

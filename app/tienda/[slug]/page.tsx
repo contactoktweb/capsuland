@@ -167,11 +167,18 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Price */}
-              <div className="mb-6">
-                <span className="text-3xl font-bold text-charcoal">
-                  ${product.price.toLocaleString("es-CO")}
-                </span>
-                <span className="text-sm text-charcoal/40 ml-2">{product.cantidad}</span>
+              <div className="mb-6 flex items-end gap-3">
+                <div className="flex flex-col">
+                  {product.originalPrice && (
+                    <span className="text-sm text-charcoal/30 line-through decoration-charcoal/20 mb-[-4px]">
+                      ${product.originalPrice.toLocaleString("es-CO")}
+                    </span>
+                  )}
+                  <span className="text-3xl font-bold text-charcoal">
+                    ${product.price.toLocaleString("es-CO")}
+                  </span>
+                </div>
+                <span className="text-sm text-charcoal/40 pb-1.5">{product.cantidad}</span>
               </div>
 
               {/* Beneficios */}

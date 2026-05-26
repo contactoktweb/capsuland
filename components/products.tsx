@@ -94,9 +94,16 @@ export default function Products() {
                   </p>
 
                   <div className="mt-4 pt-3 border-t border-charcoal/5 flex items-center justify-between">
-                    <span className="text-xl font-bold text-teal">
-                      ${product.price.toLocaleString("es-CO")}
-                    </span>
+                    <div className="flex flex-col">
+                      {product.originalPrice && (
+                        <span className="text-[10px] text-charcoal/30 line-through decoration-charcoal/20">
+                          ${product.originalPrice.toLocaleString("es-CO")}
+                        </span>
+                      )}
+                      <span className="text-xl font-bold text-teal">
+                        ${product.price.toLocaleString("es-CO")}
+                      </span>
+                    </div>
                     <Link
                       href={`/tienda/${product.slug}`}
                       className="text-xs font-semibold text-orange hover:text-orange-dark transition-colors flex items-center gap-1"

@@ -31,6 +31,7 @@ export interface Product {
   modoDeUso: string
   cantidad: string
   price: number
+  originalPrice?: number
   gallery: string[]
   categoria: ProductCategory
 }
@@ -49,7 +50,8 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 32900,
+    originalPrice: 45000,
     gallery: [
       "/productos/Biotina/Biotina-frontal.png",
       "/productos/Biotina/Biotina-Frasco-Frontal.png",
@@ -69,10 +71,10 @@ export const products: Product[] = [
     descripcion:
       "La vitamina D ayuda al cuerpo absorber el calcio y contribuye al funcionamiento normal del sistema inmune. El Calcio contribuye al mantenimiento normal de los huesos y al funcionamiento normal del sistema nervioso y muscular.",
     advertencia:
-      "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
+      "Este producto es un suplemento dietario, no es un medicamento and no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 28900,
     gallery: [
       "/productos/Calcio 400/Calcio-400-frontal.png",
       "/productos/Calcio 400/Calcio-Frasco-Frontal.png",
@@ -134,7 +136,8 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 38900,
+    originalPrice: 52000,
     gallery: [
       "/productos/Colageno + Biotina/Colageno-+-Biotina-Frontal.png",
       "/productos/Colageno + Biotina/Colageno-+-Biotina-Frasco-Frontal.png",

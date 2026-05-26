@@ -157,12 +157,22 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                               </div>
 
                               <div className="flex items-center gap-2">
-                                <span className="text-xs font-bold text-charcoal">
-                                  $
-                                  {(
-                                    item.product.price * item.quantity
-                                  ).toLocaleString("es-CO")}
-                                </span>
+                                <div className="flex flex-col items-end">
+                                  {item.product.originalPrice && (
+                                    <span className="text-[9px] text-charcoal/30 line-through decoration-charcoal/20 leading-none">
+                                      $
+                                      {(
+                                        item.product.originalPrice * item.quantity
+                                      ).toLocaleString("es-CO")}
+                                    </span>
+                                  )}
+                                  <span className="text-xs font-bold text-charcoal">
+                                    $
+                                    {(
+                                      item.product.price * item.quantity
+                                    ).toLocaleString("es-CO")}
+                                  </span>
+                                </div>
                                 <button
                                   onClick={() => removeItem(item.product.slug)}
                                   className="text-charcoal/30 hover:text-red-500 transition-colors"

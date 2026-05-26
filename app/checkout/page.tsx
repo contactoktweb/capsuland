@@ -24,6 +24,7 @@ export default function CheckoutPage() {
     notas: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errorMsg, setErrorMsg] = useState("")
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -34,9 +35,45 @@ export default function CheckoutPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 1500))
-    clearCart()
-    router.push("/gracias")
+    setErrorMsg("")
+
+    try {
+      const payload = {
+        customerName: formData.nombre,
+        email: formData.email,
+        phone: formData.telefono,
+        address: `${formData.direccion}, ${formData.ciudad}, ${formData.departamento}`,
+        city: formData.ciudad,
+        subtotal: totalPrice,
+        total: totalPrice,
+        items: items.map((item) => ({
+          productId: item.product._id,
+          quantity: item.quantity,
+          price: item.product.price,
+        })),
+      }
+
+      const response = await fetch("/api/checkout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Ocurrió un error al procesar el pedido.")
+      }
+
+      clearCart()
+      router.push("/gracias")
+    } catch (err: any) {
+      console.error("Checkout submission failed:", err)
+      setErrorMsg(err.message || "No se pudo completar el pedido. Por favor, intenta de nuevo.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (items.length === 0) {
@@ -324,11 +361,18 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Submit */}
+                {errorMsg && (
+                  <div className="mt-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-xl text-xs flex items-start gap-2 animate-fade-in">
+                    <Icon icon="ph:warning-circle-fill" className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                    <span>{errorMsg}</span>
+                  </div>
+                )}
+
                 <button
                   type="submit"
                   form="checkout-form"
                   disabled={isSubmitting}
-                  className="w-full mt-6 bg-orange hover:bg-orange-dark disabled:opacity-60 disabled:cursor-wait text-white font-bold py-4 rounded-xl transition-all hover:scale-[1.01] shadow-lg shadow-orange/20 text-sm flex items-center justify-center gap-2"
+                  className="w-full mt-4 bg-orange hover:bg-orange-dark disabled:opacity-60 disabled:cursor-wait text-white font-bold py-4 rounded-xl transition-all hover:scale-[1.01] shadow-lg shadow-orange/20 text-sm flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">

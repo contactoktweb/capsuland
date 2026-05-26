@@ -1,15 +1,47 @@
-export type ProductCategory =
-  | "Vitaminas"
-  | "Ácidos Grasos"
-  | "Proteínas"
-  | "Antioxidantes"
-  | "Minerales"
-  | "Minerales y Vitaminas"
-  | "Proteínas y Vitaminas"
-  | "Bienestar Digestivo"
-  | "Bienestar Femenino"
+import fs from "fs"
+import path from "path"
+import { fileURLToPath } from "url"
+import { createClient } from "@sanity/client"
 
-export const PRODUCT_CATEGORIES: ProductCategory[] = [
+// Read environment variables
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+const projectRoot = path.join(__dirname, "..")
+const envFile = fs.readFileSync(path.join(projectRoot, ".env.local"), "utf8")
+
+const envVars = {}
+envFile.split("\n").forEach((line) => {
+  const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/)
+  if (match) {
+    let value = match[2] ? match[2].trim() : ""
+    if (value.startsWith('"') && value.endsWith('"')) {
+      value = value.substring(1, value.length - 1)
+    } else if (value.startsWith("'") && value.endsWith("'")) {
+      value = value.substring(1, value.length - 1)
+    }
+    envVars[match[1]] = value
+  }
+})
+
+const projectId = envVars.NEXT_PUBLIC_SANITY_PROJECT_ID
+const dataset = envVars.NEXT_PUBLIC_SANITY_DATASET
+const token = envVars.SANITY_API_WRITE_TOKEN
+
+if (!projectId || !dataset || !token) {
+  console.error("Missing Sanity environment variables in .env.local")
+  process.exit(1)
+}
+
+const client = createClient({
+  projectId,
+  dataset,
+  apiVersion: "2026-05-26",
+  token,
+  useCdn: false,
+})
+
+// Current static categories list
+const PRODUCT_CATEGORIES = [
   "Vitaminas",
   "Ácidos Grasos",
   "Proteínas",
@@ -21,24 +53,8 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   "Bienestar Femenino",
 ]
 
-export interface Product {
-  _id?: string
-  referencia: string
-  slug: any // can be string or slug object
-  registroInvima?: string
-  beneficios?: string
-  descripcion?: string
-  advertencia?: string
-  modoDeUso?: string
-  cantidad?: string
-  price: number
-  originalPrice?: number
-  gallery?: string[]
-  images?: any[]
-  categoria: any
-}
-
-export const products: Product[] = [
+// Current static products list
+const products = [
   {
     referencia: "BIOTINA 900 mcg",
     slug: "biotina-900-mcg",
@@ -73,7 +89,7 @@ export const products: Product[] = [
     descripcion:
       "La vitamina D ayuda al cuerpo absorber el calcio y contribuye al funcionamiento normal del sistema inmune. El Calcio contribuye al mantenimiento normal de los huesos y al funcionamiento normal del sistema nervioso y muscular.",
     advertencia:
-      "Este producto es un suplemento dietario, no es un medicamento and no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
+      "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
     price: 28900,
@@ -99,7 +115,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 35900,
     gallery: [],
   },
   {
@@ -115,7 +131,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 34900,
     gallery: [
       "/productos/Colageno/Colageno-frontal.png",
       "/productos/Colageno/Colageno-Frasco-frontal.png",
@@ -162,7 +178,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 31900,
     gallery: [
       "/productos/Complejo B/Complejo-B-Frontal.png",
       "/productos/Complejo B/Complejo-B-Frasco-Frontal.png",
@@ -185,7 +201,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 36900,
     gallery: [],
   },
   {
@@ -201,7 +217,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 42900,
     gallery: [],
   },
   {
@@ -217,7 +233,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 33900,
     gallery: [
       "/productos/Isoflavonas/Isoflavona-frontal.png",
       "/productos/Isoflavonas/Isoflavonas-Frasco-Frontal.png",
@@ -240,7 +256,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 29900,
     gallery: [],
   },
   {
@@ -256,7 +272,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 34900,
     gallery: [],
   },
   {
@@ -272,7 +288,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 32900,
     gallery: [
       "/productos/Omega 3/Omega-3-frontal.png",
       "/productos/Omega 3/Omega-3-Frasco-Frontal.png",
@@ -295,7 +311,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 35900,
     gallery: [
       "/productos/Omega 3, 6 y 9/Omega-3-6-9-frontal.png",
       "/productos/Omega 3, 6 y 9/Omega-3-6-y-9-Frasco-Frontal.png",
@@ -317,9 +333,9 @@ export const products: Product[] = [
       "Contiene espirulina, microalga reconocida por su contenido natural de proteínas, vitaminas y minerales. Fuente de compuestos antioxidantes que forman parte de los procesos de protección celular frente al estrés oxidativo. Complementa la nutrición diaria, aportando nutrientes de origen natural dentro de una alimentación equilibrada.",
     advertencia:
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
-    modoDeUso: "",
+    modoDeUso: "Adultos, tomar 2 capsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 31900,
     gallery: [],
   },
   {
@@ -335,7 +351,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 34900,
     gallery: [
       "/productos/Vita E 1000/Vita-E-1000-Plus-Selenium-Frontal.png",
       "/productos/Vita E 1000/Vitamina-E-1000-Frontal.png",
@@ -358,7 +374,7 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 29900,
     gallery: [
       "/productos/Vita E 400/Vita-E-400-frontal.png",
       "/productos/Vita E 400/Vitamina-E-400-Frontal.png",
@@ -370,44 +386,214 @@ export const products: Product[] = [
   },
 ]
 
-/** Mapeo de slug a imagen del combo para productos sin galería propia */
-const COMBO_FALLBACK: Record<string, string> = {
-  "biotina-900-mcg": "/productos/Capsuland Combo/Biotina.png",
-  "calcio-400-vitamina-d3": "/productos/Capsuland Combo/Calcio 400.png",
-  "colageno-500-mg": "/productos/Capsuland Combo/Colageno.png",
-  "colageno-200-biotina-900": "/productos/Capsuland Combo/Colageno y Biotina.png",
-  "complejo-b-zinc-vitamina-d3": "/productos/Capsuland Combo/Complejo B.png",
-  "isoflavona-soya-calcio-vitamina-d3": "/productos/Capsuland Combo/Isoflavona.png",
-  "omega-3": "/productos/Capsuland Combo/Omega 3.png",
-  "omega-3-6-9": "/productos/Capsuland Combo/Omega 3, 6 y 9.png",
-  "vitamina-e-1000-selenio-35": "/productos/Capsuland Combo/Vita E 1000.png",
-  "vitamina-e-400-selenio-70": "/productos/Capsuland Combo/Vita E 400.png",
-}
+// Function to upload a local image to Sanity and return an image field ref
+async function uploadImageIfExists(localPath) {
+  if (!localPath) return null
+  const decodedPath = decodeURIComponent(localPath).trim()
+  const publicPath = path.join(projectRoot, "public", decodedPath)
+  const relativePath = path.join(projectRoot, decodedPath)
 
-import { urlFor } from "@/sanity/lib/image"
-
-/** Obtiene la imagen principal del producto (frontal o fallback del combo) */
-export function getMainImage(product: any): string | null {
-  if (product.images && product.images.length > 0) {
-    try {
-      return urlFor(product.images[0]).url()
-    } catch (e) {
-      // Ignore URL build errors
-    }
+  let finalPath = ""
+  if (fs.existsSync(publicPath)) {
+    finalPath = publicPath
+  } else if (fs.existsSync(relativePath)) {
+    finalPath = relativePath
+  } else {
+    console.log(`Image not found: ${localPath}`)
+    return null
   }
-  if (product.gallery && product.gallery.length > 0) return product.gallery[0]
-  if (COMBO_FALLBACK[product.slug]) return COMBO_FALLBACK[product.slug]
-  return null
+
+  try {
+    const filename = path.basename(finalPath)
+    console.log(`Uploading ${filename}...`)
+    const asset = await client.assets.upload("image", fs.createReadStream(finalPath), {
+      filename,
+    })
+    console.log(`Uploaded successfully: ${asset._id}`)
+    return {
+      _type: "image",
+      asset: {
+        _type: "reference",
+        _ref: asset._id,
+      },
+    }
+  } catch (err) {
+    console.error(`Failed to upload ${localPath}:`, err.message)
+    return null
+  }
 }
 
+async function runMigration() {
+  console.log("Starting Sanity Migration...")
 
-/** Busca un producto por su slug */
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find((p) => p.slug === slug)
+  // 1. Create categories
+  const categoryIds = {}
+  for (const catName of PRODUCT_CATEGORIES) {
+    const doc = {
+      _type: "category",
+      _id: `cat-${catName.toLowerCase().replace(/[^a-z0-9]/g, "-")}`,
+      name: catName,
+      slug: {
+        _type: "slug",
+        current: catName.toLowerCase().replace(/[^a-z0-9]/g, "-"),
+      },
+    }
+    console.log(`Creating category: ${catName}...`)
+    const res = await client.createOrReplace(doc)
+    categoryIds[catName] = res._id
+  }
+
+  // 2. Create products
+  for (const prod of products) {
+    const galleryRefs = []
+    for (const imgPath of prod.gallery) {
+      const imgRef = await uploadImageIfExists(imgPath)
+      if (imgRef) galleryRefs.push(imgRef)
+    }
+
+    const doc = {
+      _type: "product",
+      _id: `prod-${prod.slug}`,
+      referencia: prod.referencia,
+      slug: {
+        _type: "slug",
+        current: prod.slug,
+      },
+      categoria: {
+        _type: "reference",
+        _ref: categoryIds[prod.categoria],
+      },
+      registroInvima: prod.registroInvima,
+      beneficios: prod.beneficios,
+      descripcion: prod.descripcion,
+      advertencia: prod.advertencia,
+      modoDeUso: prod.modoDeUso,
+      cantidad: prod.cantidad,
+      price: prod.price,
+      originalPrice: prod.originalPrice || undefined,
+      gallery: galleryRefs.length > 0 ? galleryRefs : undefined,
+    }
+
+    console.log(`Creating product: ${prod.referencia}...`)
+    await client.createOrReplace(doc)
+  }
+
+  // 3. Create default Global Settings
+  console.log("Creating default Global Settings...")
+  const logoImage = await uploadImageIfExists("/images/logo.png")
+  const globalDoc = {
+    _type: "global",
+    _id: "global-settings",
+    siteTitle: "Capsuland Suplementos",
+    siteDescription: "Suplementos alimenticios de la más alta calidad con certificación INVIMA y BPM.",
+    logo: logoImage || undefined,
+    email: "contacto@capsuland.co",
+    phone: "+57 321 456 7890",
+    address: "Bogotá, Colombia",
+    socials: [
+      { _key: "fb", platform: "Facebook", url: "https://facebook.com/capsuland" },
+      { _key: "ig", platform: "Instagram", url: "https://instagram.com/capsuland" },
+      { _key: "wa", platform: "WhatsApp", url: "https://wa.me/573214567890" },
+    ],
+  }
+  await client.createOrReplace(globalDoc)
+
+  // 4. Create default Homepage content
+  console.log("Creating default Homepage content...")
+  const heroBgImage = await uploadImageIfExists("/images/maquila.jpg")
+  const scientistImage = await uploadImageIfExists("/images/scientist.jpg")
+  const capsuleDetailImage = await uploadImageIfExists("/images/hero-capsule.jpg")
+
+  const homepageDoc = {
+    _type: "homepage",
+    _id: "homepage-content",
+    hero: {
+      badge: "Líderes en Maquila y Suplementos",
+      titleLine1: "Nutrimos su marca,",
+      titleLine2: "impulsamos su éxito",
+      titleLine3: "con calidad premium.",
+      subtitle:
+        "Somos laboratorios expertos en maquila, diseño y fabricación de suplementos dietarios y vitaminas de alta calidad.",
+      backgroundImage: heroBgImage || undefined,
+      stats: [
+        { _key: "s1", value: 20, suffix: "M+", label: "Cápsulas al Año" },
+        { _key: "s2", value: 15, suffix: "+", label: "Años de Experiencia" },
+        { _key: "s3", value: 100, suffix: "%", label: "Cumplimiento BPM" },
+      ],
+    },
+    trustMarquee: {
+      logos: [],
+    },
+    services: {
+      badge: "Nuestros Servicios",
+      title: "Soluciones Integrales para su Negocio",
+      items: [
+        {
+          _key: "sv1",
+          title: "Maquila de Suplementos",
+          description: "Fabricación de suplementos y vitaminas a gran escala con los más altos estándares.",
+          benefits: ["Desarrollo personalizado", "Certificación BPM", "Empaque final premium"],
+          iconName: "FlaskConical",
+        },
+        {
+          _key: "sv2",
+          title: "Asesoría Regulatoria",
+          description: "Le acompañamos en todo el proceso de registro ante el INVIMA y normatividad vigente.",
+          benefits: ["Trámite ágil", "Revisión técnica completa", "Tranquilidad legal"],
+          iconName: "ShieldCheck",
+        },
+      ],
+    },
+    about: {
+      badge: "Nuestra Trayectoria",
+      title: "Con alcance global, operamos desde 2011.",
+      quote: "Somos el aliado estratégico que garantiza calidad y respaldo continuo para su negocio.",
+      features: [
+        {
+          _key: "f1",
+          title: "Innovación Constante",
+          description: "Desarrollamos formulaciones avanzadas que marcan tendencia en la industria.",
+          iconName: "FlaskConical",
+        },
+        {
+          _key: "f2",
+          title: "Calidad Certificada",
+          description: "Cumplimos con los estándares BPM más estrictos para garantizar seguridad total.",
+          iconName: "CheckCircle2",
+        },
+      ],
+      mainImage: scientistImage || undefined,
+      secondaryImage: capsuleDetailImage || undefined,
+      yearsOfExperience: "25+",
+    },
+    process: {
+      badge: "Cómo Trabajamos",
+      title: "Nuestro Proceso de Fabricación",
+      steps: [
+        { _key: "step1", stepNumber: "01", title: "Diseño & Formulación", description: "Definimos la fórmula ideal." },
+        { _key: "step2", stepNumber: "02", title: "Fabricación BPM", description: "Producción bajo estrictos controles." },
+        { _key: "step3", stepNumber: "03", title: "Control de Calidad", description: "Validación de cada lote fabricado." },
+      ],
+    },
+    testimonials: {
+      badge: "Testimonios",
+      title: "Lo que Dicen Nuestros Clientes",
+      reviews: [
+        {
+          _key: "r1",
+          name: "Carlos Mendoza",
+          role: "Gerente de NutriLife",
+          comment: "Excelente servicio de maquila. La calidad de las cápsulas y el empaque superó nuestras expectativas.",
+          rating: 5,
+        },
+      ],
+    },
+  }
+  await client.createOrReplace(homepageDoc)
+
+  console.log("Migration finished successfully! All static content is now inside Sanity!")
 }
 
-/** Devuelve N productos aleatorios */
-export function getFeaturedProducts(count: number): Product[] {
-  const shuffled = [...products].sort(() => Math.random() - 0.5)
-  return shuffled.slice(0, count)
-}
+runMigration().catch((err) => {
+  console.error("Migration failed:", err)
+})

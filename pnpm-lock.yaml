@@ -177,6 +177,9 @@ importers:
         specifier: ^3.24.1
         version: 3.25.76
     devDependencies:
+      '@sanity/client':
+        specifier: ^7.22.0
+        version: 7.22.0
       '@tailwindcss/postcss':
         specifier: ^4.1.13
         version: 4.1.18

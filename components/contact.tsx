@@ -1,7 +1,8 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
-import { MapPin, Phone, Mail, Send } from "lucide-react"
+import { MapPin, Phone, Mail, Send, CheckCircle, AlertCircle } from "lucide-react"
 
 const contactInfo = [
   {
@@ -37,6 +38,60 @@ const fadeUp = {
 }
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    nombre: "",
+    empresa: "",
+    email: "",
+    mensaje: "",
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<{
+    success?: boolean
+    message?: string
+  } | null>(null)
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.id]: e.target.value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.nombre,
+          company: formData.empresa,
+          email: formData.email,
+          message: formData.mensaje,
+        }),
+      })
+      const data = await response.json()
+      if (response.ok) {
+        setSubmitStatus({
+          success: true,
+          message: "¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.",
+        })
+        setFormData({ nombre: "", empresa: "", email: "", mensaje: "" })
+      } else {
+        setSubmitStatus({
+          success: false,
+          message: data.error || "Ocurrió un error al enviar el mensaje.",
+        })
+      }
+    } catch (error) {
+      setSubmitStatus({
+        success: false,
+        message: "Error de red. Por favor verifica tu conexión e intenta de nuevo.",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <section
       id="contacto"
@@ -105,7 +160,7 @@ export default function Contact() {
             {/* Right: Form */}
             <form
               className="flex flex-col gap-5"
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleSubmit}
             >
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
@@ -115,6 +170,9 @@ export default function Contact() {
                   <input
                     id="nombre"
                     type="text"
+                    required
+                    value={formData.nombre}
+                    onChange={handleChange}
                     placeholder="Tu nombre"
                     className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-teal/50 transition-colors"
                   />
@@ -126,6 +184,8 @@ export default function Contact() {
                   <input
                     id="empresa"
                     type="text"
+                    value={formData.empresa}
+                    onChange={handleChange}
                     placeholder="Tu empresa"
                     className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-teal/50 transition-colors"
                   />
@@ -138,6 +198,9 @@ export default function Contact() {
                 <input
                   id="email"
                   type="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="tu@email.com"
                   className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-teal/50 transition-colors"
                 />
@@ -145,25 +208,47 @@ export default function Contact() {
               <div className="flex flex-col gap-2">
                 <label className="text-xs text-white/50 uppercase tracking-wide" htmlFor="mensaje">
                   Mensaje
-                </label>
-                <textarea
-                  id="mensaje"
-                  rows={4}
-                  placeholder="Cuentanos sobre tu proyecto..."
-                  className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-teal/50 transition-colors resize-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-orange px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-orange/25 hover:bg-orange-dark transition-colors mt-2"
-              >
-                Enviar Mensaje
-                <Send className="w-4 h-4" />
-              </button>
-            </form>
-          </div>
-        </motion.div>
-      </div>
-    </section>
+                  </label>
+                  <textarea
+                    id="mensaje"
+                    rows={4}
+                    required
+                    value={formData.mensaje}
+                    onChange={handleChange}
+                    placeholder="Cuentanos sobre tu proyecto..."
+                    className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-teal/50 transition-colors resize-none"
+                  />
+                </div>
+                
+                {submitStatus && (
+                  <div
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-sm ${
+                      submitStatus.success
+                        ? "bg-teal/10 border-teal/20 text-teal-light"
+                        : "bg-red-500/10 border-red-500/20 text-red-400"
+                    }`}
+                  >
+                    {submitStatus.success ? (
+                      <CheckCircle className="w-5 h-5 shrink-0" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 shrink-0" />
+                    )}
+                    <span>{submitStatus.message}</span>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-orange px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-orange/25 hover:bg-orange-dark disabled:opacity-60 transition-colors mt-2"
+                >
+                  {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
+                  <Send className="w-4 h-4" />
+                </button>
+              </form>
+            </div>
+          </motion.div>
+        </div>
+      </section>
   )
 }

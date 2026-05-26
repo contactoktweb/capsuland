@@ -79,7 +79,19 @@ const fadeUp = {
   transition: { duration: 0.5 },
 }
 
-export default function Testimonials() {
+interface TestimonialsProps {
+  data?: {
+    badge?: string
+    title?: string
+    description?: string
+  }
+}
+
+export default function Testimonials({ data }: TestimonialsProps) {
+  const badge = data?.badge || "Estructura Organizacional"
+  const title = data?.title || "Nuestro equipo de trabajo"
+  const description = data?.description || "Una estructura sólida y altamente especializada, orientada a la excelencia en cada etapa del proceso productivo farmacéutico B2B."
+
   return (
     <section className="py-16 md:py-28 bg-white relative overflow-hidden flex flex-col items-center">
       {/* Background patterns to make it less minimalist */}
@@ -100,14 +112,13 @@ export default function Testimonials() {
         <motion.div {...fadeUp} className="text-center mb-10 md:mb-16 w-full max-w-3xl">
           <span className="inline-flex items-center justify-center gap-2 text-[10px] md:text-xs font-bold tracking-widest uppercase text-teal mb-4 bg-teal/5 py-1.5 px-4 rounded-full border border-teal/10">
             <span className="w-2 h-2 rounded-full bg-teal shadow-[0_0_8px_#14b8a6]" />
-            Estructura Organizacional
+            {badge}
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-charcoal mb-4 tracking-tight">
-            Nuestro equipo de trabajo
+            {title}
           </h2>
           <p className="text-charcoal/70 text-sm md:text-base leading-relaxed">
-            Una estructura sólida y altamente especializada, orientada a la excelencia en cada etapa del
-            proceso productivo farmacéutico B2B.
+            {description}
           </p>
         </motion.div>
 

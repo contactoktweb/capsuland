@@ -11,12 +11,57 @@ const fadeUp = {
   transition: { duration: 0.5 },
 }
 
-const stats = [
-  { value: "20M", label: "Capsulas / Ano" },
-  { value: "100%", label: "Cumplimiento BPM" },
-]
+const iconMap: Record<string, any> = {
+  FlaskConical,
+  CheckCircle2,
+}
 
-export default function About() {
+interface AboutPoint {
+  title: string
+  description: string
+  iconName?: string
+}
+
+interface AboutProps {
+  data?: {
+    badge?: string
+    title?: string
+    quote?: string
+    points?: AboutPoint[]
+    features?: AboutPoint[]
+    mainImage?: string
+    secondaryImage?: string
+    experienceYears?: number
+    yearsOfExperience?: string | number
+  }
+}
+
+export default function About({ data }: AboutProps) {
+  const defaultPoints: AboutPoint[] = [
+    {
+      title: "Innovacion Constante",
+      description: "Desarrollamos formulaciones avanzadas que marcan tendencia en la industria farmaceutica.",
+      iconName: "FlaskConical",
+    },
+    {
+      title: "Calidad Certificada",
+      description: "Cumplimos con los estandares BPM mas estrictos para garantizar seguridad total.",
+      iconName: "CheckCircle2",
+    }
+  ]
+
+  const badge = data?.badge || "Nuestra Trayectoria"
+  const title = data?.title || "Con alcance global, operamos desde 2011."
+  const quote = data?.quote || "Somos el aliado estrategico que garantiza calidad y respaldo continuo para su negocio."
+  const points = data?.features || data?.points || defaultPoints
+  const mainImage = data?.mainImage || "/images/scientist.jpg"
+  const secondaryImage = data?.secondaryImage || "/images/hero-capsule.jpg"
+  const experienceYears = data?.yearsOfExperience !== undefined 
+    ? data.yearsOfExperience 
+    : data?.experienceYears !== undefined 
+      ? `${data.experienceYears}+` 
+      : "25+"
+
   return (
     <section id="nosotros" className="py-24 md:py-32 bg-white relative overflow-hidden">
       {/* Background Pattern */}
@@ -34,44 +79,36 @@ export default function About() {
           <motion.div {...fadeUp} className="order-2 lg:order-1">
             <span className="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-teal mb-6 bg-teal/10 px-3 py-1 rounded-full">
               <Globe2 className="w-3 h-3" />
-              Nuestra Trayectoria
+              {badge}
             </span>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-8 leading-[1.1]">
-              Con alcance <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal to-teal/70">global</span>, <br />
-              operamos desde <span className="relative inline-block">
-                2011
-                <span className="absolute bottom-1 left-0 w-full h-3 bg-orange/20 -z-10 rounded-sm" />
-              </span>.
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-8 leading-[1.1] text-balance">
+              {title}
             </h2>
 
-            <p className="text-lg text-charcoal/70 leading-relaxed mb-8 border-l-4 border-orange pl-6 italic">
-              "Somos el aliado estrategico que garantiza calidad y respaldo continuo para su negocio."
-            </p>
+            {quote && (
+              <p className="text-lg text-charcoal/70 leading-relaxed mb-8 border-l-4 border-orange pl-6 italic">
+                "{quote}"
+              </p>
+            )}
 
             <div className="space-y-6 mb-10">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-teal/10 flex items-center justify-center shrink-0 text-teal">
-                  <FlaskConical className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-charcoal text-lg">Innovacion Constante</h3>
-                  <p className="text-charcoal/60 text-sm leading-relaxed mt-1">
-                    Desarrollamos formulaciones avanzadas que marcan tendencia en la industria farmaceutica.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-orange/10 flex items-center justify-center shrink-0 text-orange">
-                  <CheckCircle2 className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-charcoal text-lg">Calidad Certificada</h3>
-                  <p className="text-charcoal/60 text-sm leading-relaxed mt-1">
-                    Cumplimos con los estandares BPM mas estrictos para garantizar seguridad total.
-                  </p>
-                </div>
-              </div>
+              {points.map((point, idx) => {
+                const IconComponent = iconMap[point.iconName || ""] || CheckCircle2
+                return (
+                  <div key={point.title} className="flex items-start gap-4">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${idx % 2 === 0 ? "bg-teal/10 text-teal" : "bg-orange/10 text-orange"}`}>
+                      <IconComponent className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-charcoal text-lg">{point.title}</h3>
+                      <p className="text-charcoal/60 text-sm leading-relaxed mt-1">
+                        {point.description}
+                      </p>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
 
             <div className="flex flex-wrap gap-4">
@@ -100,7 +137,7 @@ export default function About() {
             {/* Main Image - Scientist */}
             <div className="relative w-[80%] h-[500px] rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white z-10 rotate-[-2deg] transition-transform hover:rotate-0 duration-500">
               <Image
-                src="/images/scientist.jpg"
+                src={mainImage}
                 alt="Cientifica experta"
                 fill
                 className="object-cover"
@@ -115,7 +152,7 @@ export default function About() {
               transition={{ duration: 0.3 }}
             >
               <Image
-                src="/images/hero-capsule.jpg"
+                src={secondaryImage}
                 alt="Detalle de capsula"
                 fill
                 className="object-cover"
@@ -123,13 +160,12 @@ export default function About() {
             </motion.div>
 
             {/* Floating Glass Stat Card */}
-            {/* Floating Glass Stat Card - High Visibility */}
             <motion.div
               className="absolute top-10 -right-4 md:right-0 bg-white/95 backdrop-blur-xl border border-teal/10 p-6 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] z-30 max-w-[180px]"
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-              <span className="text-4xl font-heading font-bold text-teal">25+</span>
+              <span className="text-4xl font-heading font-bold text-teal">{experienceYears}</span>
               <p className="text-xs font-bold uppercase tracking-wider text-charcoal/80 mt-1">Anos de Experiencia Global</p>
             </motion.div>
 

@@ -17,7 +17,21 @@ const navLinks = [
   { label: "Contacto", href: "/#contacto", icon: "ph:envelope-light" },
 ]
 
-export default function Header() {
+interface GlobalSettings {
+  siteTitle?: string
+  siteDescription?: string
+  logo?: string
+  email?: string
+  phone?: string
+  address?: string
+  socials?: Array<{ platform: string; url: string }>
+}
+
+interface HeaderProps {
+  settings?: GlobalSettings
+}
+
+export default function Header({ settings }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [cartOpen, setCartOpen] = useState(false)
   const { totalItems } = useCart()
@@ -31,8 +45,8 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <img
-              src="/images/logo.png"
-              alt="CAPSULAND Logo"
+              src={settings?.logo || "/images/logo.png"}
+              alt={settings?.siteTitle ? `${settings.siteTitle} Logo` : "CAPSULAND Logo"}
               className="h-10 w-auto object-contain"
             />
           </Link>
@@ -79,11 +93,11 @@ export default function Header() {
           {/* Desktop CTA + Cart */}
           <div className="hidden md:flex items-center gap-4">
             <a
-              href="tel:+573103047673"
+              href={`tel:${(settings?.phone || "310 304 7673").replace(/[^\d+]/g, "")}`}
               className="flex items-center gap-2 text-sm text-charcoal/70 hover:text-teal transition-colors"
             >
               <Icon icon="ph:phone-light" className="w-4 h-4" />
-              <span>310 304 7673</span>
+              <span>{settings?.phone || "310 304 7673"}</span>
             </a>
 
             {/* Cart button → opens sidebar */}

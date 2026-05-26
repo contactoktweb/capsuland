@@ -32,19 +32,45 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
   )
 }
 
-export default function Hero() {
+interface HeroStat {
+  value: number
+  suffix?: string
+  label: string
+}
+
+interface HeroProps {
+  data?: {
+    badge?: string
+    titleLine1?: string
+    titleLine2?: string
+    titleLine3?: string
+    subtitle?: string
+    backgroundImage?: string
+    stats?: HeroStat[]
+  }
+}
+
+export default function Hero({ data }: HeroProps) {
   const { scrollY } = useScroll()
 
   const imageScale = useTransform(scrollY, [0, 800], [1, 1.15])
   const textY = useTransform(scrollY, [0, 800], [0, -60])
   const overlayOpacity = useTransform(scrollY, [0, 600], [0.5, 0.85])
 
-  const stats = [
+  const defaultStats = [
     { value: 20, suffix: "M+", label: "Capsulas / Ano" },
     { value: 15, suffix: "+", label: "Años Experiencia" },
     { value: 98, suffix: "%", label: "Satisfaccion" },
     { value: 2, suffix: "", label: "Certificaciones" },
   ]
+
+  const stats = data?.stats || defaultStats
+  const bgImage = data?.backgroundImage || "/images/hero-capsule.jpg"
+  const badge = data?.badge || "Laboratorio Farmaceutico"
+  const titleLine1 = data?.titleLine1 || "Ciencia"
+  const titleLine2 = data?.titleLine2 || "Encuentra"
+  const titleLine3 = data?.titleLine3 || "Innovacion."
+  const subtitle = data?.subtitle || "Fabricamos capsulas blandas de gelatina con los mas altos estandares internacionales de calidad."
 
   return (
     <section
@@ -54,7 +80,7 @@ export default function Hero() {
       {/* Background Image with zoom effect */}
       <motion.div className="absolute inset-0" style={{ scale: imageScale }}>
         <Image
-          src="/images/hero-capsule.jpg"
+          src={bgImage}
           alt="Capsulas blandas y estructura molecular"
           fill
           className="object-cover object-[25%_center]"
@@ -83,7 +109,7 @@ export default function Hero() {
           >
             <span className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-xs font-semibold tracking-[0.25em] uppercase text-white backdrop-blur-md">
               <span className="h-1.5 w-1.5 rounded-full bg-orange animate-pulse" />
-              Laboratorio Farmaceutico
+              {badge}
             </span>
           </motion.div>
 
@@ -101,7 +127,7 @@ export default function Hero() {
                 animate={{ y: 0, opacity: 0.9 }}
                 transition={{ duration: 0.7, delay: 0.4, ease: [0.33, 1, 0.68, 1] }}
               >
-                {"Ciencia"}
+                {titleLine1}
               </motion.span>
               <motion.span
                 className="block text-transparent stroke-white"
@@ -110,7 +136,7 @@ export default function Hero() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.55, ease: [0.33, 1, 0.68, 1] }}
               >
-                {"Encuentra"}
+                {titleLine2}
               </motion.span>
               <motion.span
                 className="block text-orange drop-shadow-[0_0_30px_rgba(242,140,40,0.6)]"
@@ -118,7 +144,7 @@ export default function Hero() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.7, delay: 0.7, ease: [0.33, 1, 0.68, 1] }}
               >
-                {"Innovacion."}
+                {titleLine3}
               </motion.span>
             </motion.h1>
           </div>
@@ -130,8 +156,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1 }}
           >
-            Fabricamos capsulas blandas de gelatina con los mas altos
-            estandares internacionales de calidad.
+            {subtitle}
           </motion.p>
 
           {/* CTA Buttons - punchier */}
@@ -186,7 +211,7 @@ export default function Hero() {
       >
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-2 md:grid-cols-4">
-            {stats.map((stat, i) => (
+            {stats.map((stat: any, i: number) => (
               <div
                 key={stat.label}
                 className={`flex items-center gap-4 py-6 md:py-8 px-4 ${i < stats.length - 1 ? "md:border-r md:border-white/15" : ""

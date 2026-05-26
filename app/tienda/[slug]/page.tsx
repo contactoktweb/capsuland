@@ -5,6 +5,7 @@ import { client } from "@/sanity/lib/client"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { Icon } from "@iconify/react"
+import { globalSettingsQuery } from "@/sanity/lib/queries"
 
 // Force dynamic fetch
 export const revalidate = 0
@@ -18,21 +19,23 @@ interface PageProps {
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = params
 
-  // Query product details from Sanity
+  // Query product details from Sanity, related products, and global settings in parallel
   const productQuery = `*[_type == "product" && slug.current == $slug][0]`
-  const product = await client.fetch(productQuery, { slug })
+  const relatedQuery = `*[_type == "product" && slug.current != $slug][0...4]`
+
+  const [product, relatedProducts, settings] = await Promise.all([
+    client.fetch(productQuery, { slug }),
+    client.fetch(relatedQuery, { slug }),
+    client.fetch(globalSettingsQuery)
+  ])
 
   if (!product) {
     notFound()
   }
 
-  // Fetch related products (e.g. up to 4 other products of same or different categories)
-  const relatedQuery = `*[_type == "product" && slug.current != $slug][0...4]`
-  const relatedProducts = await client.fetch(relatedQuery, { slug })
-
   return (
     <main>
-      <Header />
+      <Header settings={settings} />
 
       {/* Breadcrumb */}
       <nav className="pt-24 pb-4 bg-white border-b border-charcoal/5" aria-label="Navegación">
@@ -61,7 +64,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
       <ProductDetailClient product={product} relatedProducts={relatedProducts} />
 
-      <Footer />
+      <Footer settings={settings} />
     </main>
   )
 }

@@ -16,7 +16,21 @@ const services = [
   { label: "Asuntos Regulatorios", icon: "ph:clipboard-text-light" },
 ]
 
-export default function Footer() {
+interface GlobalSettings {
+  siteTitle?: string
+  siteDescription?: string
+  logo?: string
+  email?: string
+  phone?: string
+  address?: string
+  socials?: Array<{ platform: string; url: string }>
+}
+
+interface FooterProps {
+  settings?: GlobalSettings
+}
+
+export default function Footer({ settings }: FooterProps) {
   const currentYear = new Date().getFullYear()
 
   return (
@@ -27,14 +41,13 @@ export default function Footer() {
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <img
-                src="/images/logo.png"
-                alt="CAPSULAND Logo"
+                src={settings?.logo || "/images/logo.png"}
+                alt={settings?.siteTitle ? `${settings.siteTitle} Logo` : "CAPSULAND Logo"}
                 className="h-12 w-auto object-contain brightness-0 invert"
               />
             </div>
             <p className="text-white/50 text-sm leading-relaxed mb-6">
-              Laboratorio farmaceutico especializado en la fabricacion
-              de capsulas blandas de gelatina con estandares internacionales.
+              {settings?.siteDescription || "Laboratorio farmaceutico especializado en la fabricacion de capsulas blandas de gelatina con estandares internacionales."}
             </p>
           </div>
 
@@ -84,21 +97,32 @@ export default function Footer() {
               <div className="flex items-start gap-3">
                 <Icon icon="ph:map-pin-light" className="w-4 h-4 text-teal mt-0.5 shrink-0" />
                 <span className="text-sm text-white/50">
-                  Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B
+                  {settings?.address || "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B"}
                 </span>
               </div>
-              <a href="tel:+573103047673" className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors">
+              <a
+                href={`tel:${(settings?.phone || "310 304 7673").replace(/[^\d+]/g, "")}`}
+                className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors"
+              >
                 <Icon icon="ph:phone-light" className="w-4 h-4 text-teal shrink-0" />
-                <span className="text-sm">310 304 7673</span>
+                <span className="text-sm">{settings?.phone || "310 304 7673"}</span>
               </a>
-              <a href="mailto:comercial2@capsuland.com" className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors">
+              <a
+                href={`mailto:${settings?.email || "comercial2@capsuland.com"}`}
+                className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors"
+              >
                 <Icon icon="ph:envelope-light" className="w-4 h-4 text-teal shrink-0" />
-                <span className="text-sm">comercial2@capsuland.com</span>
+                <span className="text-sm">{settings?.email || "comercial2@capsuland.com"}</span>
               </a>
-              <a href="mailto:coordinadorcomercial@capsuland.com" className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors">
-                <Icon icon="ph:envelope-light" className="w-4 h-4 text-teal shrink-0" />
-                <span className="text-sm">coordinadorcomercial@capsuland.com</span>
-              </a>
+              {!settings?.email && (
+                <a
+                  href="mailto:coordinadorcomercial@capsuland.com"
+                  className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors"
+                >
+                  <Icon icon="ph:envelope-light" className="w-4 h-4 text-teal shrink-0" />
+                  <span className="text-sm">coordinadorcomercial@capsuland.com</span>
+                </a>
+              )}
             </div>
           </div>
         </div>

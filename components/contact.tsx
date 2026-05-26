@@ -4,32 +4,6 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { MapPin, Phone, Mail, Send, CheckCircle, AlertCircle } from "lucide-react"
 
-const contactInfo = [
-  {
-    icon: MapPin,
-    label: "Direccion",
-    value: "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B",
-  },
-  {
-    icon: Phone,
-    label: "Telefono",
-    value: "310 304 7673",
-    href: "tel:+573103047673",
-  },
-  {
-    icon: Mail,
-    label: "Email",
-    value: "comercial2@capsuland.com",
-    href: "mailto:comercial2@capsuland.com",
-  },
-  {
-    icon: Mail,
-    label: "Email Comercial",
-    value: "coordinadorcomercial@capsuland.com",
-    href: "mailto:coordinadorcomercial@capsuland.com",
-  },
-]
-
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -37,7 +11,69 @@ const fadeUp = {
   transition: { duration: 0.5 },
 }
 
-export default function Contact() {
+interface GlobalSettings {
+  siteTitle?: string
+  siteDescription?: string
+  logo?: string
+  email?: string
+  phone?: string
+  address?: string
+  socials?: Array<{ platform: string; url: string }>
+}
+
+interface ContactProps {
+  settings?: GlobalSettings
+}
+
+export default function Contact({ settings }: ContactProps) {
+  const defaultContactInfo = [
+    {
+      icon: MapPin,
+      label: "Direccion",
+      value: "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B",
+    },
+    {
+      icon: Phone,
+      label: "Telefono",
+      value: "310 304 7673",
+      href: "tel:+573103047673",
+    },
+    {
+      icon: Mail,
+      label: "Email",
+      value: "comercial2@capsuland.com",
+      href: "mailto:comercial2@capsuland.com",
+    },
+    {
+      icon: Mail,
+      label: "Email Comercial",
+      value: "coordinadorcomercial@capsuland.com",
+      href: "mailto:coordinadorcomercial@capsuland.com",
+    },
+  ]
+
+  const contactInfo = settings
+    ? [
+        {
+          icon: MapPin,
+          label: "Direccion",
+          value: settings.address || "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B",
+        },
+        {
+          icon: Phone,
+          label: "Telefono",
+          value: settings.phone || "310 304 7673",
+          href: `tel:${(settings.phone || "310 304 7673").replace(/[^\d+]/g, "")}`,
+        },
+        {
+          icon: Mail,
+          label: "Email",
+          value: settings.email || "comercial2@capsuland.com",
+          href: `mailto:${settings.email || "comercial2@capsuland.com"}`,
+        },
+      ]
+    : defaultContactInfo
+
   const [formData, setFormData] = useState({
     nombre: "",
     empresa: "",

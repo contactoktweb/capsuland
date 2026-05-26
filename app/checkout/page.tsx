@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Icon } from "@iconify/react"
 import Image from "next/image"
@@ -10,10 +10,20 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { getMainImage } from "@/lib/products"
 import { useCart } from "@/lib/cart-context"
+import { client } from "@/sanity/lib/client"
+import { globalSettingsQuery } from "@/sanity/lib/queries"
 
 export default function CheckoutPage() {
   const router = useRouter()
   const { items, updateQuantity, removeItem, clearCart, totalPrice } = useCart()
+  const [settings, setSettings] = useState<any>(null)
+  
+  useEffect(() => {
+    client.fetch(globalSettingsQuery)
+      .then(setSettings)
+      .catch(err => console.error("Error fetching global settings in checkout:", err))
+  }, [])
+
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -79,7 +89,7 @@ export default function CheckoutPage() {
   if (items.length === 0) {
     return (
       <main>
-        <Header />
+        <Header settings={settings} />
         <section className="pt-32 pb-24 bg-white min-h-screen">
           <div className="mx-auto max-w-2xl px-6 text-center">
             <motion.div
@@ -104,14 +114,14 @@ export default function CheckoutPage() {
             </motion.div>
           </div>
         </section>
-        <Footer />
+        <Footer settings={settings} />
       </main>
     )
   }
 
   return (
     <main>
-      <Header />
+      <Header settings={settings} />
 
       <section className="pt-28 pb-16 bg-white min-h-screen">
         <div className="mx-auto max-w-7xl px-6">
@@ -392,7 +402,7 @@ export default function CheckoutPage() {
         </div>
       </section>
 
-      <Footer />
+      <Footer settings={settings} />
     </main>
   )
 }

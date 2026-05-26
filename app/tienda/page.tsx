@@ -2,7 +2,7 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import StoreClient from "@/components/store-client"
 import { client } from "@/sanity/lib/client"
-import { productsQuery, categoriesQuery } from "@/sanity/lib/queries"
+import { productsQuery, categoriesQuery, globalSettingsQuery } from "@/sanity/lib/queries"
 import Link from "next/link"
 import { Icon } from "@iconify/react"
 
@@ -10,12 +10,15 @@ import { Icon } from "@iconify/react"
 export const revalidate = 0
 
 export default async function TiendaPage() {
-  const products = await client.fetch(productsQuery)
-  const categories = await client.fetch(categoriesQuery)
+  const [products, categories, settings] = await Promise.all([
+    client.fetch(productsQuery),
+    client.fetch(categoriesQuery),
+    client.fetch(globalSettingsQuery)
+  ])
 
   return (
     <main>
-      <Header />
+      <Header settings={settings} />
       <StoreClient products={products} categories={categories} />
 
       {/* Maquila CTA */}
@@ -65,7 +68,7 @@ export default async function TiendaPage() {
         </div>
       </section>
 
-      <Footer />
+      <Footer settings={settings} />
     </main>
   )
 }

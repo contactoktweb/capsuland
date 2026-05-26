@@ -17,13 +17,31 @@ const fadeUp = {
 /** Selección determinista inicial (primeros 4) para SSR, luego aleatoria en cliente */
 const INITIAL_FEATURED = products.slice(0, 4)
 
-export default function Products() {
+interface ProductsProps {
+  products?: Product[]
+  title?: string
+  subtitle?: string
+}
+
+export default function Products({ products: propProducts, title: propTitle, subtitle: propSubtitle }: ProductsProps) {
   const [featured, setFeatured] = useState<Product[]>(INITIAL_FEATURED)
 
   useEffect(() => {
-    const shuffled = [...products].sort(() => Math.random() - 0.5)
-    setFeatured(shuffled.slice(0, 4))
-  }, [])
+    if (propProducts && propProducts.length > 0) {
+      // Filter out products that have price 0 or get the first 4 products
+      const validProducts = propProducts.filter(p => p.price > 0)
+      const list = validProducts.length > 0 ? validProducts : propProducts
+      setFeatured(list.slice(0, 4))
+    } else {
+      const validProducts = products.filter(p => p.price > 0)
+      const list = validProducts.length > 0 ? validProducts : products
+      const shuffled = [...list].sort(() => Math.random() - 0.5)
+      setFeatured(shuffled.slice(0, 4))
+    }
+  }, [propProducts])
+
+  const sectionTitle = propTitle || "Suplementos Dietarios"
+  const sectionSubtitle = propSubtitle || "Descubre nuestra línea de suplementos en cápsula blanda con registro INVIMA, desarrollados con los más altos estándares de calidad."
 
   return (
     <section id="productos" className="py-24 md:py-32 bg-light">
@@ -34,11 +52,10 @@ export default function Products() {
             Productos Destacados
           </span>
           <h2 className="text-4xl md:text-5xl font-bold text-charcoal mb-6">
-            Suplementos Dietarios
+            {sectionTitle}
           </h2>
           <p className="text-charcoal/60 max-w-2xl mx-auto text-lg">
-            Descubre nuestra línea de suplementos en cápsula blanda con registro INVIMA,
-            desarrollados con los más altos estándares de calidad.
+            {sectionSubtitle}
           </p>
         </motion.div>
 

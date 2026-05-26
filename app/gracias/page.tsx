@@ -6,18 +6,25 @@ import { Icon } from "@iconify/react"
 import Link from "next/link"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { client } from "@/sanity/lib/client"
+import { globalSettingsQuery } from "@/sanity/lib/queries"
 
 export default function GraciasPage() {
   const [orderNumber, setOrderNumber] = useState("")
+  const [settings, setSettings] = useState<any>(null)
 
   useEffect(() => {
     const num = `CAP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
     setOrderNumber(num)
+
+    client.fetch(globalSettingsQuery)
+      .then(setSettings)
+      .catch(err => console.error("Error fetching global settings in gracias page:", err))
   }, [])
 
   return (
     <main>
-      <Header />
+      <Header settings={settings} />
 
       <section className="pt-32 pb-24 bg-gradient-to-br from-teal/5 via-white to-orange/5 min-h-screen flex items-center">
         <div className="mx-auto max-w-2xl px-6 text-center">
@@ -126,7 +133,7 @@ export default function GraciasPage() {
         </div>
       </section>
 
-      <Footer />
+      <Footer settings={settings} />
     </main>
   )
 }

@@ -266,26 +266,44 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                       {/* Footer */}
                       <div className="flex items-center justify-between pt-3 border-t border-charcoal/5">
                         <div className="flex flex-col">
-                          {product.originalPrice && (
-                            <span className="text-[10px] text-charcoal/30 line-through decoration-charcoal/20">
-                              ${product.originalPrice.toLocaleString("es-CO")}
+                          {(!product.price || product.price <= 0) ? (
+                            <span className="text-sm font-bold text-orange">
+                              Próximamente
                             </span>
+                          ) : (
+                            <>
+                              {product.originalPrice && (
+                                <span className="text-[10px] text-charcoal/30 line-through decoration-charcoal/20">
+                                  ${product.originalPrice.toLocaleString("es-CO")}
+                                </span>
+                              )}
+                              <span className="text-xl font-bold text-charcoal">
+                                ${product.price.toLocaleString("es-CO")}
+                              </span>
+                            </>
                           )}
-                          <span className="text-xl font-bold text-charcoal">
-                            ${product.price.toLocaleString("es-CO")}
-                          </span>
                         </div>
-                        <button
-                          onClick={() => addItem(product)}
-                          className="inline-flex items-center gap-1.5 bg-orange hover:bg-orange-dark text-white text-xs font-semibold px-4 py-2 rounded-full transition-all hover:scale-105 shadow-sm shadow-orange/20"
-                          aria-label={`Agregar ${product.referencia} al carrito`}
-                        >
-                          <Icon
-                            icon="ph:shopping-cart-simple-light"
-                            className="w-4 h-4"
-                          />
-                          Agregar
-                        </button>
+                        {(!product.price || product.price <= 0) ? (
+                          <Link
+                            href={`/tienda/${product.slug}`}
+                            className="inline-flex items-center gap-1 bg-charcoal hover:bg-charcoal/95 text-white text-xs font-semibold px-4 py-2 rounded-full transition-all hover:scale-105 shadow-sm"
+                          >
+                            Ver detalle
+                            <Icon icon="ph:arrow-right-light" className="w-3.5 h-3.5" />
+                          </Link>
+                        ) : (
+                          <button
+                            onClick={() => addItem(product)}
+                            className="inline-flex items-center gap-1.5 bg-orange hover:bg-orange-dark text-white text-xs font-semibold px-4 py-2 rounded-full transition-all hover:scale-105 shadow-sm shadow-orange/20"
+                            aria-label={`Agregar ${product.referencia} al carrito`}
+                          >
+                            <Icon
+                              icon="ph:shopping-cart-simple-light"
+                              className="w-4 h-4"
+                            />
+                            Agregar
+                          </button>
+                        )}
                       </div>
                     </div>
                   </motion.article>

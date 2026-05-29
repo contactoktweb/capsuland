@@ -28,14 +28,9 @@ export default function Products({ products: propProducts, title: propTitle, sub
 
   useEffect(() => {
     if (propProducts && propProducts.length > 0) {
-      // Filter out products that have price 0 or get the first 4 products
-      const validProducts = propProducts.filter(p => p.price > 0)
-      const list = validProducts.length > 0 ? validProducts : propProducts
-      setFeatured(list.slice(0, 4))
+      setFeatured(propProducts.slice(0, 4))
     } else {
-      const validProducts = products.filter(p => p.price > 0)
-      const list = validProducts.length > 0 ? validProducts : products
-      const shuffled = [...list].sort(() => Math.random() - 0.5)
+      const shuffled = [...products].sort(() => Math.random() - 0.5)
       setFeatured(shuffled.slice(0, 4))
     }
   }, [propProducts])
@@ -112,14 +107,22 @@ export default function Products({ products: propProducts, title: propTitle, sub
 
                   <div className="mt-4 pt-3 border-t border-charcoal/5 flex items-center justify-between">
                     <div className="flex flex-col">
-                      {product.originalPrice && (
-                        <span className="text-[10px] text-charcoal/30 line-through decoration-charcoal/20">
-                          ${product.originalPrice.toLocaleString("es-CO")}
+                      {(!product.price || product.price <= 0) ? (
+                        <span className="text-sm font-bold text-orange">
+                          Próximamente
                         </span>
+                      ) : (
+                        <>
+                          {product.originalPrice && (
+                            <span className="text-[10px] text-charcoal/30 line-through decoration-charcoal/20">
+                              ${product.originalPrice.toLocaleString("es-CO")}
+                            </span>
+                          )}
+                          <span className="text-xl font-bold text-teal">
+                            ${product.price.toLocaleString("es-CO")}
+                          </span>
+                        </>
                       )}
-                      <span className="text-xl font-bold text-teal">
-                        ${product.price.toLocaleString("es-CO")}
-                      </span>
                     </div>
                     <Link
                       href={`/tienda/${product.slug}`}

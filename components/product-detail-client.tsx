@@ -167,16 +167,26 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               {/* Price */}
               <div className="mb-6 flex items-end gap-3">
                 <div className="flex flex-col">
-                  {product.originalPrice && (
-                    <span className="text-sm text-charcoal/30 line-through decoration-charcoal/20 mb-[-4px]">
-                      ${product.originalPrice.toLocaleString("es-CO")}
+                  {(!product.price || product.price <= 0) ? (
+                    <span className="text-3xl font-bold text-orange">
+                      Próximamente
                     </span>
+                  ) : (
+                    <>
+                      {product.originalPrice && (
+                        <span className="text-sm text-charcoal/30 line-through decoration-charcoal/20 mb-[-4px]">
+                          ${product.originalPrice.toLocaleString("es-CO")}
+                        </span>
+                      )}
+                      <span className="text-3xl font-bold text-charcoal">
+                        ${product.price.toLocaleString("es-CO")}
+                      </span>
+                    </>
                   )}
-                  <span className="text-3xl font-bold text-charcoal">
-                    ${product.price.toLocaleString("es-CO")}
-                  </span>
                 </div>
-                <span className="text-sm text-charcoal/40 pb-1.5">{product.cantidad}</span>
+                {product.price > 0 && (
+                  <span className="text-sm text-charcoal/40 pb-1.5">{product.cantidad}</span>
+                )}
               </div>
 
               {/* Beneficios */}
@@ -217,47 +227,62 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   <p className="text-sm text-charcoal/70">{product.modoDeUso}</p>
                 </div>
               )}
-
               {/* Quantity + Add to cart */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-auto pt-6 border-t border-charcoal/5">
-                {/* Quantity selector */}
-                <div className="flex items-center border border-charcoal/15 rounded-xl overflow-hidden">
+              {(!product.price || product.price <= 0) ? (
+                <div className="mt-auto pt-6 border-t border-charcoal/5">
+                  <div className="flex items-center gap-3 bg-orange/5 border border-orange/15 rounded-2xl p-4 text-orange">
+                    <Icon icon="ph:clock-light" className="w-5 h-5 flex-shrink-0" />
+                    <div>
+                      <h3 className="text-sm font-bold uppercase tracking-wider mb-0.5">
+                        Lanzamiento Próximo
+                      </h3>
+                      <p className="text-xs text-charcoal/60 leading-relaxed">
+                        Este suplemento estará disponible para compra muy pronto. ¡Mantente atento a nuestras novedades!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mt-auto pt-6 border-t border-charcoal/5">
+                  {/* Quantity selector */}
+                  <div className="flex items-center border border-charcoal/15 rounded-xl overflow-hidden">
+                    <button
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      className="w-10 h-10 flex items-center justify-center text-charcoal/60 hover:bg-charcoal/5 transition-colors"
+                      aria-label="Reducir cantidad"
+                    >
+                      <Icon icon="ph:minus-light" className="w-4 h-4" />
+                    </button>
+                    <span className="w-12 h-10 flex items-center justify-center text-sm font-bold text-charcoal border-x border-charcoal/15">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={() => setQuantity((q) => q + 1)}
+                      className="w-10 h-10 flex items-center justify-center text-charcoal/60 hover:bg-charcoal/5 transition-colors"
+                      aria-label="Aumentar cantidad"
+                    >
+                      <Icon icon="ph:plus-light" className="w-4 h-4" />
+                    </button>
+                  </div>
+ 
+                  {/* Action buttons */}
                   <button
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="w-10 h-10 flex items-center justify-center text-charcoal/60 hover:bg-charcoal/5 transition-colors"
-                    aria-label="Reducir cantidad"
+                    onClick={handleAddToCart}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-charcoal hover:bg-charcoal/90 text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all hover:scale-[1.02] shadow-sm"
                   >
-                    <Icon icon="ph:minus-light" className="w-4 h-4" />
+                    <Icon icon="ph:shopping-cart-simple-light" className="w-4 h-4" />
+                    Agregar al Carrito
                   </button>
-                  <span className="w-12 h-10 flex items-center justify-center text-sm font-bold text-charcoal border-x border-charcoal/15">
-                    {quantity}
-                  </span>
+ 
                   <button
-                    onClick={() => setQuantity((q) => q + 1)}
-                    className="w-10 h-10 flex items-center justify-center text-charcoal/60 hover:bg-charcoal/5 transition-colors"
-                    aria-label="Aumentar cantidad"
+                    onClick={handleBuyNow}
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-orange hover:bg-orange-dark text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all hover:scale-[1.02] shadow-lg shadow-orange/20"
                   >
-                    <Icon icon="ph:plus-light" className="w-4 h-4" />
+                    <Icon icon="ph:lightning-light" className="w-4 h-4" />
+                    Comprar Ahora
                   </button>
                 </div>
-
-                {/* Action buttons */}
-                <button
-                  onClick={handleAddToCart}
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-charcoal hover:bg-charcoal/90 text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all hover:scale-[1.02] shadow-sm"
-                >
-                  <Icon icon="ph:shopping-cart-simple-light" className="w-4 h-4" />
-                  Agregar al Carrito
-                </button>
-
-                <button
-                  onClick={handleBuyNow}
-                  className="flex-1 inline-flex items-center justify-center gap-2 bg-orange hover:bg-orange-dark text-white text-sm font-semibold px-6 py-3 rounded-xl transition-all hover:scale-[1.02] shadow-lg shadow-orange/20"
-                >
-                  <Icon icon="ph:lightning-light" className="w-4 h-4" />
-                  Comprar Ahora
-                </button>
-              </div>
+              )}
 
               {/* Importante */}
               {product.advertencia && (

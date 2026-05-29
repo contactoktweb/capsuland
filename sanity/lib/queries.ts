@@ -12,6 +12,13 @@ export const globalSettingsQuery = groq`
     socials[] {
       platform,
       url
+    },
+    "favicon": favicon.asset->url,
+    "appleIcon": appleIcon.asset->url,
+    seoGeo {
+      region,
+      placename,
+      position
     }
   }
 `

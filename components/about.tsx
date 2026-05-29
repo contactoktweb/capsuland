@@ -60,7 +60,7 @@ export default function About({ data }: AboutProps) {
     ? data.yearsOfExperience 
     : data?.experienceYears !== undefined 
       ? `${data.experienceYears}+` 
-      : "25+"
+      : "15+"
 
   return (
     <section id="nosotros" className="py-24 md:py-32 bg-white relative overflow-hidden">

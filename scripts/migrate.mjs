@@ -495,6 +495,11 @@ async function runMigration() {
       { _key: "ig", platform: "Instagram", url: "https://instagram.com/capsuland" },
       { _key: "wa", platform: "WhatsApp", url: "https://wa.me/573214567890" },
     ],
+    seoGeo: {
+      region: "CO-DC",
+      placename: "Bogotá",
+      position: "4.6097100;-74.0817500",
+    }
   }
   await client.createOrReplace(globalDoc)
 
@@ -564,7 +569,7 @@ async function runMigration() {
       ],
       mainImage: scientistImage || undefined,
       secondaryImage: capsuleDetailImage || undefined,
-      yearsOfExperience: "25+",
+      yearsOfExperience: "15+",
     },
     process: {
       badge: "Cómo Trabajamos",

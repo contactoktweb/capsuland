@@ -173,12 +173,7 @@ export default function Hero({ data }: HeroProps) {
               Cotizar Ahora
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </a>
-            <a
-              href="#servicios"
-              className="group inline-flex items-center gap-3 rounded-full border-2 border-white/25 px-8 py-4 text-sm font-semibold text-white hover:border-white hover:text-white hover:bg-white/10 transition-all duration-300"
-            >
-              Explorar Servicios
-            </a>
+
           </motion.div>
         </div>
 

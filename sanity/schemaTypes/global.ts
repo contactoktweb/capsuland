@@ -51,5 +51,37 @@ export default defineType({
         },
       ],
     }),
+    defineField({
+      name: "favicon",
+      title: "Favicon (Ícono del navegador - 32x32 recomendado)",
+      type: "image",
+    }),
+    defineField({
+      name: "appleIcon",
+      title: "Apple Touch Icon (Ícono para iOS - 180x180 recomendado)",
+      type: "image",
+    }),
+    defineField({
+      name: "seoGeo",
+      title: "Configuración SEO GEO (Ubicación Geográfica)",
+      type: "object",
+      fields: [
+        {
+          name: "region",
+          title: "Región (ej: CO-DC para Bogotá, Colombia)",
+          type: "string",
+        },
+        {
+          name: "placename",
+          title: "Nombre del Lugar (ej: Bogotá)",
+          type: "string",
+        },
+        {
+          name: "position",
+          title: "Coordenadas (Latitud;Longitud, ej: 4.6097100;-74.0817500)",
+          type: "string",
+        },
+      ],
+    }),
   ],
 })

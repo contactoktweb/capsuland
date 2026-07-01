@@ -26,23 +26,23 @@ interface ContactProps {
 }
 
 export default function Contact({ settings }: ContactProps) {
-  const defaultContactInfo = [
+  const contactInfo = [
     {
       icon: MapPin,
       label: "Direccion",
-      value: "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B",
+      value: settings?.address || "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B",
     },
     {
       icon: Phone,
       label: "Telefono",
-      value: "310 304 7673",
-      href: "tel:+573103047673",
+      value: settings?.phone || "310 304 7673",
+      href: `tel:${(settings?.phone || "310 304 7673").replace(/[^\d+]/g, "")}`,
     },
     {
       icon: Mail,
       label: "Email",
-      value: "comercial2@capsuland.com",
-      href: "mailto:comercial2@capsuland.com",
+      value: settings?.email || "comercial2@capsuland.com",
+      href: `mailto:${settings?.email || "comercial2@capsuland.com"}`,
     },
     {
       icon: Mail,
@@ -51,28 +51,6 @@ export default function Contact({ settings }: ContactProps) {
       href: "mailto:coordinadorcomercial@capsuland.com",
     },
   ]
-
-  const contactInfo = settings
-    ? [
-        {
-          icon: MapPin,
-          label: "Direccion",
-          value: settings.address || "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B",
-        },
-        {
-          icon: Phone,
-          label: "Telefono",
-          value: settings.phone || "310 304 7673",
-          href: `tel:${(settings.phone || "310 304 7673").replace(/[^\d+]/g, "")}`,
-        },
-        {
-          icon: Mail,
-          label: "Email",
-          value: settings.email || "comercial2@capsuland.com",
-          href: `mailto:${settings.email || "comercial2@capsuland.com"}`,
-        },
-      ]
-    : defaultContactInfo
 
   const [formData, setFormData] = useState({
     nombre: "",

@@ -57,7 +57,7 @@ async function seed() {
     siteDescription: "Fabricamos capsulas blandas de gelatina con los mas altos estandares internacionales de calidad.",
     logo: logoImage,
     email: "contacto@capsuland.com",
-    phone: "+57 300 000 0000",
+    phone: "+57 310 304 7673",
     address: "Bogotá, Colombia",
     socials: [
       {

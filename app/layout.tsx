@@ -9,7 +9,6 @@ const heebo = Heebo({ subsets: ["latin"], variable: "--font-heebo", display: "sw
 
 import { client } from "@/sanity/lib/client"
 import { globalSettingsQuery } from "@/sanity/lib/queries"
-import Maintenance from '@/components/maintenance'
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await client.fetch(globalSettingsQuery)
@@ -44,18 +43,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const isProduction = process.env.NODE_ENV === 'production'
-
   return (
     <html lang="es">
       <body className={`${inter.variable} ${heebo.variable} antialiased`}>
-        {isProduction ? (
-          <Maintenance />
-        ) : (
-          <CartProvider>
-            {children}
-          </CartProvider>
-        )}
+        <CartProvider>
+          {children}
+        </CartProvider>
         <Analytics />
       </body>
     </html>

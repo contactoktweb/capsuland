@@ -5,26 +5,29 @@ import { client } from "@/sanity/lib/client"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { Icon } from "@iconify/react"
-import { globalSettingsQuery } from "@/sanity/lib/queries"
+import { globalSettingsQuery, productBySlugQuery } from "@/sanity/lib/queries"
 
 // Force dynamic fetch
 export const revalidate = 0
 
-interface PageProps {
-  params: {
-    slug: string
-  }
-}
+export default async function ProductDetailPage(props: any) {
+  const params = await props.params;
+  const slug = params?.slug;
 
-export default async function ProductDetailPage({ params }: PageProps) {
-  const { slug } = params
+  if (!slug) {
+    notFound()
+  }
 
   // Query product details from Sanity, related products, and global settings in parallel
-  const productQuery = `*[_type == "product" && slug.current == $slug][0]`
-  const relatedQuery = `*[_type == "product" && slug.current != $slug][0...4]`
+  const relatedQuery = `*[_type == "product" && slug.current != $slug][0...4] {
+    referencia,
+    slug,
+    registroInvima,
+    "gallery": gallery[].asset->url
+  }`
 
   const [product, relatedProducts, settings] = await Promise.all([
-    client.fetch(productQuery, { slug }),
+    client.fetch(productBySlugQuery, { slug }),
     client.fetch(relatedQuery, { slug }),
     client.fetch(globalSettingsQuery)
   ])

@@ -22,7 +22,7 @@ interface Product {
   modoDeUso?: string
   advertencia?: string
   categoria: string
-  images: any[]
+  gallery?: string[]
 }
 
 interface ProductDetailClientProps {
@@ -36,10 +36,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const [galleryOpen, setGalleryOpen] = useState(false)
   const { addItem } = useCart()
 
-  const images = product.images || []
-  const mainImage = images.length > 0 ? urlFor(images[0]).url() : null
-  const currentImage = images.length > 0 ? urlFor(images[selectedImage]).url() : null
-  const galleryImageUrls = images.map(img => urlFor(img).url())
+  const images = product.gallery || []
+  const currentImage = images.length > 0 ? images[selectedImage] : null
+  const galleryImageUrls = images
 
   // Format to match standard cart logic expectations
   const cartProduct = {
@@ -51,7 +50,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
     registroInvima: product.registroInvima,
     beneficios: product.beneficios,
     categoria: product.categoria,
-    images: images
+    gallery: images
   }
 
   const handleAddToCart = () => {
@@ -123,7 +122,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       aria-label={`Ver imagen ${idx + 1}`}
                     >
                       <Image
-                        src={urlFor(img).url()}
+                        src={img}
                         alt={`${product.referencia} miniatura ${idx + 1}`}
                         width={80}
                         height={80}
@@ -315,8 +314,8 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {relatedProducts.map((p) => {
-                const pImages = p.images || []
-                const pImg = pImages.length > 0 ? urlFor(pImages[0]).url() : null
+                const pImages = p.gallery || []
+                const pImg = pImages.length > 0 ? pImages[0] : null
                 return (
                   <Link
                     key={p.slug.current}

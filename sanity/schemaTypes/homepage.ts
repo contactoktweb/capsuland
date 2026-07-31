@@ -250,4 +250,11 @@ export default defineType({
       ],
     }),
   ],
+  preview: {
+    prepare() {
+      return {
+        title: 'Configuración de Página de Inicio',
+      }
+    }
+  }
 })

@@ -12,6 +12,26 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "tipoDocumento",
+      title: "Tipo de Documento",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+      options: {
+        list: [
+          { title: "Cédula de Ciudadanía", value: "CC" },
+          { title: "Cédula de Extranjería", value: "CE" },
+          { title: "NIT", value: "NIT" },
+          { title: "Pasaporte", value: "Pasaporte" }
+        ],
+      }
+    }),
+    defineField({
+      name: "cedula",
+      title: "Cédula",
+      type: "string",
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: "email",
       title: "Correo Electrónico",
       type: "string",
@@ -109,4 +129,17 @@ export default defineType({
       initialValue: () => new Date().toISOString(),
     }),
   ],
+  preview: {
+    select: {
+      title: 'customerName',
+      status: 'status',
+      total: 'total'
+    },
+    prepare({ title, status, total }) {
+      return {
+        title: title || 'Sin Nombre',
+        subtitle: `Total: $${total} - Estado: ${(status || 'pendiente').toUpperCase()}`,
+      }
+    }
+  }
 })

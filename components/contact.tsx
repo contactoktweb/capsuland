@@ -55,6 +55,7 @@ export default function Contact({ settings }: ContactProps) {
   const [formData, setFormData] = useState({
     nombre: "",
     empresa: "",
+    telefono: "",
     email: "",
     mensaje: "",
   })
@@ -79,6 +80,7 @@ export default function Contact({ settings }: ContactProps) {
         body: JSON.stringify({
           name: formData.nombre,
           company: formData.empresa,
+          phone: formData.telefono,
           email: formData.email,
           message: formData.mensaje,
         }),
@@ -89,7 +91,7 @@ export default function Contact({ settings }: ContactProps) {
           success: true,
           message: "¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.",
         })
-        setFormData({ nombre: "", empresa: "", email: "", mensaje: "" })
+        setFormData({ nombre: "", empresa: "", telefono: "", email: "", mensaje: "" })
       } else {
         setSubmitStatus({
           success: false,
@@ -205,19 +207,35 @@ export default function Contact({ settings }: ContactProps) {
                   />
                 </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <label className="text-xs text-white/50 uppercase tracking-wide" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="tu@email.com"
-                  className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-teal/50 transition-colors"
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs text-white/50 uppercase tracking-wide" htmlFor="telefono">
+                    Teléfono
+                  </label>
+                  <input
+                    id="telefono"
+                    type="tel"
+                    required
+                    value={formData.telefono}
+                    onChange={handleChange}
+                    placeholder="Tu teléfono"
+                    className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-teal/50 transition-colors"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-xs text-white/50 uppercase tracking-wide" htmlFor="email">
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="tu@email.com"
+                    className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-teal/50 transition-colors"
+                  />
+                </div>
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-xs text-white/50 uppercase tracking-wide" htmlFor="mensaje">

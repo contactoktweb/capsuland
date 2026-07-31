@@ -17,12 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     title: settings?.siteTitle || 'CAPSULAND - Innovacion en Capsula Blanda',
     description: settings?.siteDescription || 'Fabricacion de capsulas blandas con estandares internacionales. Maquila, desarrollo, suplementos y medicamentos.',
     icons: {
-      icon: settings?.favicon ? [
-        { url: settings.favicon },
-        { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
-        { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
-        { url: '/icon.svg', type: 'image/svg+xml' }
-      ] : [
+      icon: settings?.favicon ? settings.favicon : [
         { url: '/icon-light-32x32.png', media: '(prefers-color-scheme: light)' },
         { url: '/icon-dark-32x32.png', media: '(prefers-color-scheme: dark)' },
         { url: '/icon.svg', type: 'image/svg+xml' }
@@ -38,6 +33,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 
+import { Toaster } from "sonner"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,6 +47,7 @@ export default function RootLayout({
           {children}
         </CartProvider>
         <Analytics />
+        <Toaster position="bottom-right" richColors />
       </body>
     </html>
   )

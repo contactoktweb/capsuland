@@ -18,6 +18,33 @@ export default function CheckoutPage() {
   const { items, updateQuantity, removeItem, clearCart, totalPrice } = useCart()
   const [settings, setSettings] = useState<any>(null)
   
+const COLOMBIA_LOCATIONS: Record<string, string[]> = {
+  "Antioquia": ["Medellín", "Bello", "Itagüí", "Envigado", "Apartadó", "Rionegro", "Otro"],
+  "Atlántico": ["Barranquilla", "Soledad", "Malambo", "Sabanagrande", "Puerto Colombia", "Otro"],
+  "Bogotá D.C.": ["Bogotá"],
+  "Bolívar": ["Cartagena", "Magangué", "Turbaco", "El Carmen de Bolívar", "Arjona", "Otro"],
+  "Boyacá": ["Tunja", "Sogamoso", "Duitama", "Chiquinquirá", "Puerto Boyacá", "Otro"],
+  "Caldas": ["Manizales", "La Dorada", "Chinchiná", "Villamaría", "Riosucio", "Otro"],
+  "Cauca": ["Popayán", "Santander de Quilichao", "El Tambo", "Puerto Tejada", "Piendamó", "Otro"],
+  "Cesar": ["Valledupar", "Aguachica", "Agustín Codazzi", "Bosconia", "Curumaní", "Otro"],
+  "Córdoba": ["Montería", "Santa Cruz de Lorica", "Tierralta", "Cereté", "Sahagún", "Otro"],
+  "Cundinamarca": ["Soacha", "Chía", "Zipaquirá", "Facatativá", "Fusagasugá", "Otro"],
+  "Huila": ["Neiva", "Pitalito", "Garzón", "La Plata", "Otro"],
+  "La Guajira": ["Riohacha", "Maicao", "Uribia", "San Juan del Cesar", "Otro"],
+  "Magdalena": ["Santa Marta", "Ciénaga", "Zona Bananera", "Fundación", "El Banco", "Otro"],
+  "Meta": ["Villavicencio", "Acacías", "Granada", "Puerto López", "Puerto Gaitán", "Otro"],
+  "Nariño": ["Pasto", "Tumaco", "Ipiales", "Túquerres", "Otro"],
+  "Norte de Santander": ["Cúcuta", "Ocaña", "Villa del Rosario", "Los Patios", "Pamplona", "Otro"],
+  "Quindío": ["Armenia", "Calarcá", "Montenegro", "La Tebaida", "Quimbaya", "Otro"],
+  "Risaralda": ["Pereira", "Dosquebradas", "Santa Rosa de Cabal", "Otro"],
+  "Santander": ["Bucaramanga", "Floridablanca", "Barrancabermeja", "Girón", "Piedecuesta", "Otro"],
+  "Sucre": ["Sincelejo", "Corozal", "San Marcos", "Tolú", "Otro"],
+  "Tolima": ["Ibagué", "Espinal", "Melgar", "Chaparral", "Honda", "Otro"],
+  "Valle del Cauca": ["Cali", "Buenaventura", "Palmira", "Tuluá", "Yumbo", "Cartago", "Jamundí", "Otro"],
+  "Otro": ["Otro"]
+}
+const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
+
   useEffect(() => {
     client.fetch(globalSettingsQuery)
       .then(setSettings)
@@ -26,6 +53,8 @@ export default function CheckoutPage() {
 
   const [formData, setFormData] = useState({
     nombre: "",
+    tipoDocumento: "CC",
+    cedula: "",
     email: "",
     telefono: "",
     direccion: "",
@@ -39,7 +68,12 @@ export default function CheckoutPage() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    const { name, value } = e.target
+    if (name === "departamento") {
+      setFormData((prev) => ({ ...prev, departamento: value, ciudad: "" }))
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }))
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,6 +84,8 @@ export default function CheckoutPage() {
     try {
       const payload = {
         customerName: formData.nombre,
+        tipoDocumento: formData.tipoDocumento,
+        cedula: formData.cedula,
         email: formData.email,
         phone: formData.telefono,
         address: `${formData.direccion}, ${formData.ciudad}, ${formData.departamento}`,
@@ -75,6 +111,18 @@ export default function CheckoutPage() {
         const errorData = await response.json()
         throw new Error(errorData.error || "Ocurrió un error al procesar el pedido.")
       }
+
+      // Save order details to localStorage before clearing cart so success page can display them
+      const orderDataToSave = {
+        items: items.map(i => ({
+           referencia: i.product.referencia,
+           price: i.product.price,
+           quantity: i.quantity,
+           image: getMainImage(i.product)
+        })),
+        total: totalPrice,
+      }
+      localStorage.setItem("capsuland_last_order", JSON.stringify(orderDataToSave))
 
       clearCart()
       router.push("/gracias")
@@ -136,7 +184,7 @@ export default function CheckoutPage() {
 
           <h1 className="text-3xl md:text-4xl font-bold text-charcoal mb-10 flex items-center gap-3">
             <Icon icon="ph:credit-card-light" className="w-8 h-8 text-teal" />
-            Checkout
+            Página de Pago
           </h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
@@ -162,6 +210,44 @@ export default function CheckoutPage() {
                       required
                       className="w-full px-4 py-3 rounded-xl border border-charcoal/15 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
                       placeholder="Tu nombre"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-charcoal/70 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                      <Icon icon="ph:cards-light" className="w-3.5 h-3.5" />
+                      Tipo de Documento
+                    </label>
+                    <div className="relative">
+                      <select
+                        name="tipoDocumento"
+                        value={formData.tipoDocumento}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-charcoal/15 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all appearance-none bg-white"
+                      >
+                        <option value="CC">Cédula de Ciudadanía</option>
+                        <option value="CE">Cédula de Extranjería</option>
+                        <option value="NIT">NIT</option>
+                        <option value="Pasaporte">Pasaporte</option>
+                      </select>
+                      <Icon icon="ph:caret-down-light" className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-charcoal/50 pointer-events-none" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-charcoal/70 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                      <Icon icon="ph:identification-card-light" className="w-3.5 h-3.5" />
+                      Cédula / Documento
+                    </label>
+                    <input
+                      type="text"
+                      name="cedula"
+                      value={formData.cedula}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border border-charcoal/15 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
+                      placeholder="Número de documento"
                     />
                   </div>
 
@@ -215,34 +301,47 @@ export default function CheckoutPage() {
 
                   <div>
                     <label className="block text-xs font-semibold text-charcoal/70 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                      <Icon icon="ph:buildings-light" className="w-3.5 h-3.5" />
-                      Ciudad
+                      <Icon icon="ph:flag-light" className="w-3.5 h-3.5" />
+                      Departamento
                     </label>
-                    <input
-                      type="text"
-                      name="ciudad"
-                      value={formData.ciudad}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-charcoal/15 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
-                      placeholder="Tu ciudad"
-                    />
+                    <div className="relative">
+                      <select
+                        name="departamento"
+                        value={formData.departamento}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 rounded-xl border border-charcoal/15 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all appearance-none bg-white"
+                      >
+                        <option value="" disabled>Selecciona un departamento</option>
+                        {DEPARTMENTS.map(dep => (
+                          <option key={dep} value={dep}>{dep}</option>
+                        ))}
+                      </select>
+                      <Icon icon="ph:caret-down-light" className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-charcoal/50 pointer-events-none" />
+                    </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-charcoal/70 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                      <Icon icon="ph:flag-light" className="w-3.5 h-3.5" />
-                      Departamento
+                      <Icon icon="ph:buildings-light" className="w-3.5 h-3.5" />
+                      Ciudad
                     </label>
-                    <input
-                      type="text"
-                      name="departamento"
-                      value={formData.departamento}
-                      onChange={handleChange}
-                      required
-                      className="w-full px-4 py-3 rounded-xl border border-charcoal/15 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all"
-                      placeholder="Tu departamento"
-                    />
+                    <div className="relative">
+                      <select
+                        name="ciudad"
+                        value={formData.ciudad}
+                        onChange={handleChange}
+                        required
+                        disabled={!formData.departamento}
+                        className="w-full px-4 py-3 rounded-xl border border-charcoal/15 text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-teal/30 focus:border-teal transition-all appearance-none bg-white disabled:bg-gray-50 disabled:text-gray-400"
+                      >
+                        <option value="" disabled>Selecciona una ciudad</option>
+                        {formData.departamento && COLOMBIA_LOCATIONS[formData.departamento]?.map(city => (
+                          <option key={city} value={city}>{city}</option>
+                        ))}
+                      </select>
+                      <Icon icon="ph:caret-down-light" className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-charcoal/50 pointer-events-none" />
+                    </div>
                   </div>
 
                   <div className="sm:col-span-2">

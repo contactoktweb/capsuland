@@ -4,7 +4,7 @@ import { writeClient } from "@/sanity/lib/client"
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { customerName, email, phone, address, city, items, subtotal, total } = body
+    const { customerName, tipoDocumento, cedula, email, phone, address, city, items, subtotal, total } = body
 
     if (!customerName || !email || !phone || !address || !city || !items || !items.length) {
       return NextResponse.json(
@@ -27,6 +27,8 @@ export async function POST(req: Request) {
     const doc = {
       _type: "sale",
       customerName,
+      tipoDocumento,
+      cedula,
       email,
       phone,
       address,
@@ -39,6 +41,42 @@ export async function POST(req: Request) {
     }
 
     const result = await writeClient.create(doc)
+
+    // TODO: MERCADO PAGO INTEGRATION
+    // Una vez que tengas las credenciales de Mercado Pago:
+    // 1. Instala el SDK: npm install mercadopago
+    // 2. Importa e inicializa: 
+    //    import { MercadoPagoConfig, Preference } from 'mercadopago';
+    //    const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN! });
+    // 3. Crea la preferencia:
+    /*
+    const preference = new Preference(mpClient);
+    const prefResult = await preference.create({
+      body: {
+        items: items.map((item: any) => ({
+          id: item.productId,
+          title: item.referencia || 'Producto',
+          quantity: Number(item.quantity),
+          unit_price: Number(item.price),
+        })),
+        payer: {
+          name: customerName,
+          email: email,
+        },
+        back_urls: {
+          success: `${process.env.NEXT_PUBLIC_SITE_URL}/gracias?order_id=${result._id}`,
+          failure: `${process.env.NEXT_PUBLIC_SITE_URL}/checkout?error=payment_failed`,
+          pending: `${process.env.NEXT_PUBLIC_SITE_URL}/gracias?order_id=${result._id}&pending=true`,
+        },
+        auto_return: "approved",
+        notification_url: `${process.env.NEXT_PUBLIC_SITE_URL}/api/webhook/mercadopago`,
+        external_reference: result._id,
+      }
+    });
+    
+    // Y luego retornar el init_point para redirigir al cliente:
+    // return NextResponse.json({ success: true, id: result._id, init_point: prefResult.init_point });
+    */
 
     return NextResponse.json({ success: true, id: result._id })
   } catch (error: any) {

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { Icon } from "@iconify/react"
 import Link from "next/link"
+import Image from "next/image"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { client } from "@/sanity/lib/client"
@@ -12,6 +13,7 @@ import { globalSettingsQuery } from "@/sanity/lib/queries"
 export default function GraciasPage() {
   const [orderNumber, setOrderNumber] = useState("")
   const [settings, setSettings] = useState<any>(null)
+  const [lastOrder, setLastOrder] = useState<any>(null)
 
   useEffect(() => {
     const num = `CAP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
@@ -20,6 +22,17 @@ export default function GraciasPage() {
     client.fetch(globalSettingsQuery)
       .then(setSettings)
       .catch(err => console.error("Error fetching global settings in gracias page:", err))
+
+    try {
+      const storedOrder = localStorage.getItem("capsuland_last_order")
+      if (storedOrder) {
+        setLastOrder(JSON.parse(storedOrder))
+        // Limpiamos la orden para que no se muestre por siempre si se recarga la página
+        localStorage.removeItem("capsuland_last_order")
+      }
+    } catch (e) {
+      console.error(e)
+    }
   }, [])
 
   return (
@@ -106,6 +119,45 @@ export default function GraciasPage() {
                 <p className="text-[10px] text-charcoal/50 mt-1">Te notificaremos el despacho</p>
               </div>
             </motion.div>
+
+            {/* Last Order Section */}
+            {lastOrder && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.65 }}
+                className="w-full mb-10 text-left bg-white rounded-2xl border border-charcoal/5 shadow-sm p-6 max-w-2xl mx-auto"
+              >
+                <h2 className="text-xl font-bold text-charcoal mb-4 flex items-center gap-2">
+                  <Icon icon="ph:shopping-cart-light" className="w-5 h-5 text-teal" />
+                  Productos Comprados
+                </h2>
+                <div className="space-y-4">
+                  {lastOrder.items?.map((item: any, idx: number) => (
+                    <div key={idx} className="flex gap-4 items-center border-b border-charcoal/5 pb-4 last:border-0 last:pb-0">
+                      <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        {item.image ? (
+                          <Image src={item.image} alt={item.referencia} width={64} height={64} className="w-full h-full object-contain p-1" />
+                        ) : (
+                          <Icon icon="ph:image-light" className="w-6 h-6 text-charcoal/20" />
+                        )}
+                      </div>
+                      <div className="flex-grow">
+                        <h3 className="font-bold text-charcoal text-sm">{item.referencia}</h3>
+                        <p className="text-xs text-charcoal/60">Cant: {item.quantity}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-teal text-sm">${(item.price * item.quantity).toLocaleString("es-CO")}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-between items-center mt-4 pt-4 border-t border-charcoal/10 font-bold text-lg text-charcoal">
+                  <span>Total Pagado</span>
+                  <span>${lastOrder.total?.toLocaleString("es-CO")}</span>
+                </div>
+              </motion.div>
+            )}
 
             {/* Action Buttons */}
             <motion.div

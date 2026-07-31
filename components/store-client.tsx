@@ -7,6 +7,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { type Product, getMainImage } from "@/lib/products"
 import { useCart } from "@/lib/cart-context"
+import { toast } from "sonner"
 
 interface Category {
   _id: string
@@ -293,7 +294,10 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                           </Link>
                         ) : (
                           <button
-                            onClick={() => addItem(product)}
+                            onClick={() => {
+                              addItem(product)
+                              toast.success(`Se agregó 1 unidad de ${product.referencia} al carrito.`)
+                            }}
                             className="inline-flex items-center gap-1.5 bg-orange hover:bg-orange-dark text-white text-xs font-semibold px-4 py-2 rounded-full transition-all hover:scale-105 shadow-sm shadow-orange/20"
                             aria-label={`Agregar ${product.referencia} al carrito`}
                           >

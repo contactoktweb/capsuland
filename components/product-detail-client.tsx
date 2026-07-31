@@ -5,9 +5,11 @@ import { motion } from "framer-motion"
 import { Icon } from "@iconify/react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import ProductGallery from "@/components/product-gallery"
 import { useCart } from "@/lib/cart-context"
 import { urlFor } from "@/sanity/lib/image"
+import { toast } from "sonner"
 
 interface Product {
   _id: string
@@ -35,6 +37,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const [selectedImage, setSelectedImage] = useState(0)
   const [galleryOpen, setGalleryOpen] = useState(false)
   const { addItem } = useCart()
+  const router = useRouter()
 
   const images = product.gallery || []
   const currentImage = images.length > 0 ? images[selectedImage] : null
@@ -55,12 +58,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
   const handleAddToCart = () => {
     addItem(cartProduct, quantity)
+    toast.success(`Se agregaron ${quantity} unidades de ${product.referencia} al carrito.`)
     setQuantity(1)
   }
 
   const handleBuyNow = () => {
     addItem(cartProduct, quantity)
-    window.location.href = "/checkout"
+    router.push("/checkout")
   }
 
   return (

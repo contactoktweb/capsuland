@@ -16,6 +16,7 @@ interface GlobalSettings {
   siteDescription?: string
   logo?: string
   email?: string
+  emailSecondary?: string
   phone?: string
   address?: string
   socials?: Array<{ platform: string; url: string }>
@@ -40,15 +41,15 @@ export default function Contact({ settings }: ContactProps) {
     },
     {
       icon: Mail,
-      label: "Email",
+      label: "Email Comercial",
       value: settings?.email || "comercial2@capsuland.com",
       href: `mailto:${settings?.email || "comercial2@capsuland.com"}`,
     },
     {
       icon: Mail,
-      label: "Email Comercial",
-      value: "coordinadorcomercial@capsuland.com",
-      href: "mailto:coordinadorcomercial@capsuland.com",
+      label: "Coordinación Comercial",
+      value: settings?.emailSecondary || "coordinadorcomercial@capsuland.com",
+      href: `mailto:${settings?.emailSecondary || "coordinadorcomercial@capsuland.com"}`,
     },
   ]
 

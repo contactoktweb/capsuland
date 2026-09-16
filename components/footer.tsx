@@ -21,6 +21,7 @@ interface GlobalSettings {
   siteDescription?: string
   logo?: string
   email?: string
+  emailSecondary?: string
   phone?: string
   address?: string
   socials?: Array<{ platform: string; url: string }>
@@ -114,15 +115,13 @@ export default function Footer({ settings }: FooterProps) {
                 <Icon icon="ph:envelope-light" className="w-4 h-4 text-teal shrink-0" />
                 <span className="text-sm">{settings?.email || "comercial2@capsuland.com"}</span>
               </a>
-              {!settings?.email && (
-                <a
-                  href="mailto:coordinadorcomercial@capsuland.com"
-                  className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors"
-                >
-                  <Icon icon="ph:envelope-light" className="w-4 h-4 text-teal shrink-0" />
-                  <span className="text-sm">coordinadorcomercial@capsuland.com</span>
-                </a>
-              )}
+              <a
+                href={`mailto:${settings?.emailSecondary || "coordinadorcomercial@capsuland.com"}`}
+                className="flex items-center gap-3 text-white/50 hover:text-teal transition-colors"
+              >
+                <Icon icon="ph:envelope-light" className="w-4 h-4 text-teal shrink-0" />
+                <span className="text-sm">{settings?.emailSecondary || "coordinadorcomercial@capsuland.com"}</span>
+              </a>
             </div>
           </div>
         </div>

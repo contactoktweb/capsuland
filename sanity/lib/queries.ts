@@ -7,6 +7,7 @@ export const globalSettingsQuery = groq`
     siteDescription,
     "logo": logo.asset->url,
     email,
+    emailSecondary,
     phone,
     address,
     socials[] {

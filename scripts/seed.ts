@@ -56,7 +56,8 @@ async function seed() {
     siteTitle: "Capsuland",
     siteDescription: "Fabricamos capsulas blandas de gelatina con los mas altos estandares internacionales de calidad.",
     logo: logoImage,
-    email: "contacto@capsuland.com",
+    email: "comercial2@capsuland.com",
+    emailSecondary: "coordinadorcomercial@capsuland.com",
     phone: "+57 310 304 7673",
     address: "Bogotá, Colombia",
     socials: [

@@ -24,7 +24,12 @@ export default defineType({
     }),
     defineField({
       name: "email",
-      title: "Correo de Contacto",
+      title: "Correo Comercial Principal",
+      type: "string",
+    }),
+    defineField({
+      name: "emailSecondary",
+      title: "Correo Coordinación Comercial",
       type: "string",
     }),
     defineField({

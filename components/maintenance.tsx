@@ -32,6 +32,9 @@ export default function Maintenance() {
             <a href="mailto:comercial2@capsuland.com" className="text-white hover:text-teal-400 transition-colors font-medium">
               comercial2@capsuland.com
             </a>
+            <a href="mailto:coordinadorcomercial@capsuland.com" className="text-white hover:text-teal-400 transition-colors font-medium">
+              coordinadorcomercial@capsuland.com
+            </a>
             <a href="tel:+573103047673" className="text-white hover:text-teal-400 transition-colors font-medium">
               +57 310 304 7673
             </a>

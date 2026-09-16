@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Icon } from "@iconify/react"
 import Image from "next/image"
 import Link from "next/link"
-import { type Product, getMainImage } from "@/lib/products"
+import { type Product, getMainImage, hasProductImage } from "@/lib/products"
 import { useCart } from "@/lib/cart-context"
 import { toast } from "sonner"
 
@@ -26,9 +26,14 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
   const [searchQuery, setSearchQuery] = useState("")
   const [activeCategory, setActiveCategory] = useState<string>("")
 
-  /** Productos filtrados */
+  /** Filtrar únicamente productos que tengan al menos una imagen válida */
+  const productsWithImages = useMemo(() => {
+    return products.filter(hasProductImage)
+  }, [products])
+
+  /** Productos filtrados según búsqueda y categoría activa */
   const filtered = useMemo(() => {
-    let result = products
+    let result = productsWithImages
 
     if (activeCategory) {
       result = result.filter((p) => p.categoria === activeCategory)
@@ -46,7 +51,7 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
     }
 
     return result
-  }, [products, searchQuery, activeCategory])
+  }, [productsWithImages, searchQuery, activeCategory])
 
   const clearFilters = () => {
     setSearchQuery("")
@@ -81,7 +86,7 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
             </div>
             <p className="text-sm text-charcoal/40">
               <span className="font-bold text-charcoal">{filtered.length}</span> de{" "}
-              {products.length} productos
+              {productsWithImages.length} productos
             </p>
           </div>
 
@@ -125,11 +130,13 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                 id="store-category"
               >
                 <option value="">Todas las categorías</option>
-                {categories.map((cat) => (
-                  <option key={cat._id} value={cat.name}>
-                    {cat.name}
-                  </option>
-                ))}
+                {categories
+                  .filter((cat) => productsWithImages.some((p) => p.categoria === cat.name))
+                  .map((cat) => (
+                    <option key={cat._id} value={cat.name}>
+                      {cat.name}
+                    </option>
+                  ))}
               </select>
               <Icon
                 icon="ph:caret-down-light"
@@ -208,7 +215,7 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                     {/* Product Image */}
                     <Link href={`/tienda/${product.slug}`} className="block">
                       <div className="relative w-full aspect-square bg-gradient-to-br from-gray-50 to-gray-100/50 flex items-center justify-center overflow-hidden">
-                        {mainImage ? (
+                        {mainImage && (
                           <Image
                             src={mainImage}
                             alt={`${product.referencia} - Suplemento dietario certificado INVIMA`}
@@ -216,16 +223,6 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                             height={400}
                             className="w-[78%] h-[78%] object-contain group-hover:scale-105 transition-transform duration-500 font-sans"
                           />
-                        ) : (
-                          <div className="flex flex-col items-center justify-center gap-2 text-charcoal/25">
-                            <Icon
-                              icon="ph:image-light"
-                              className="w-14 h-14"
-                            />
-                            <span className="text-xs font-medium">
-                              Imagen próximamente
-                            </span>
-                          </div>
                         )}
 
                         {/* Discount Badge */}

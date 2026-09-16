@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { Icon } from "@iconify/react"
 import Image from "next/image"
 import Link from "next/link"
-import { products, getMainImage, type Product } from "@/lib/products"
+import { products, getMainImage, hasProductImage, type Product } from "@/lib/products"
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -14,8 +14,8 @@ const fadeUp = {
   transition: { duration: 0.5 },
 }
 
-/** Selección determinista inicial (primeros 4) para SSR, luego aleatoria en cliente */
-const INITIAL_FEATURED = products.slice(0, 4)
+/** Selección determinista inicial con imágenes para SSR, luego aleatoria en cliente */
+const INITIAL_FEATURED = products.filter(hasProductImage).slice(0, 4)
 
 interface ProductsProps {
   products?: Product[]
@@ -27,12 +27,10 @@ export default function Products({ products: propProducts, title: propTitle, sub
   const [featured, setFeatured] = useState<Product[]>(INITIAL_FEATURED)
 
   useEffect(() => {
-    if (propProducts && propProducts.length > 0) {
-      setFeatured(propProducts.slice(0, 4))
-    } else {
-      const shuffled = [...products].sort(() => Math.random() - 0.5)
-      setFeatured(shuffled.slice(0, 4))
-    }
+    const list = propProducts && propProducts.length > 0 ? propProducts : products
+    const valid = list.filter(hasProductImage)
+    const shuffled = [...valid].sort(() => Math.random() - 0.5)
+    setFeatured(shuffled.slice(0, 4))
   }, [propProducts])
 
   const sectionTitle = propTitle || "Suplementos Dietarios"
@@ -69,7 +67,7 @@ export default function Products({ products: propProducts, title: propTitle, sub
               >
                 <Link href={`/tienda/${product.slug}`} className="block">
                   <div className="relative w-full aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center overflow-hidden">
-                    {mainImage ? (
+                    {mainImage && (
                       <Image
                         src={mainImage}
                         alt={`${product.referencia} - Suplemento dietario certificado INVIMA`}
@@ -77,11 +75,6 @@ export default function Products({ products: propProducts, title: propTitle, sub
                         height={400}
                         className="w-[85%] h-[85%] object-contain group-hover:scale-105 transition-transform duration-500"
                       />
-                    ) : (
-                      <div className="flex flex-col items-center justify-center gap-2 text-charcoal/30">
-                        <Icon icon="ph:image-light" className="w-12 h-12" />
-                        <span className="text-xs font-medium">Imagen próximamente</span>
-                      </div>
                     )}
                   </div>
                 </Link>

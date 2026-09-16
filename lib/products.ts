@@ -736,16 +736,28 @@ import { urlFor } from "@/sanity/lib/image"
 
 /** Obtiene la imagen principal del producto (frontal o fallback del combo) */
 export function getMainImage(product: any): string | null {
+  if (!product) return null
   if (product.images && product.images.length > 0) {
     try {
-      return urlFor(product.images[0]).url()
+      const url = urlFor(product.images[0]).url()
+      if (url) return url
     } catch (e) {
       // Ignore URL build errors
     }
   }
-  if (product.gallery && product.gallery.length > 0) return product.gallery[0]
-  if (COMBO_FALLBACK[product.slug]) return COMBO_FALLBACK[product.slug]
+  if (product.gallery && product.gallery.length > 0 && product.gallery[0]) {
+    return product.gallery[0]
+  }
+  const slug = typeof product.slug === "object" ? product.slug?.current : product.slug
+  if (slug && COMBO_FALLBACK[slug]) return COMBO_FALLBACK[slug]
   return null
+}
+
+/** Comprueba si el producto tiene al menos una imagen válida */
+export function hasProductImage(product: any): boolean {
+  if (!product) return false
+  const img = getMainImage(product)
+  return Boolean(img && typeof img === "string" && img.trim().length > 0)
 }
 
 /** Busca un producto por su slug */
@@ -753,8 +765,10 @@ export function getProductBySlug(slug: string): Product | undefined {
   return products.find((p) => p.slug === slug)
 }
 
-/** Devuelve N productos aleatorios */
+/** Devuelve N productos aleatorios que tengan imagen disponible */
 export function getFeaturedProducts(count: number): Product[] {
-  const shuffled = [...products].sort(() => Math.random() - 0.5)
+  const withImages = products.filter(hasProductImage)
+  const shuffled = [...withImages].sort(() => Math.random() - 0.5)
   return shuffled.slice(0, count)
 }
+

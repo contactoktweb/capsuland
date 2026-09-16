@@ -19,7 +19,7 @@ export default async function ProductDetailPage(props: any) {
   }
 
   // Query product details from Sanity, related products, and global settings in parallel
-  const relatedQuery = `*[_type == "product" && slug.current != $slug][0...4] {
+  const relatedQuery = `*[_type == "product" && slug.current != $slug && defined(gallery) && length(gallery) > 0][0...4] {
     referencia,
     slug,
     registroInvima,

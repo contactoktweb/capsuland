@@ -103,9 +103,9 @@ export const categoriesQuery = groq`
   }
 `
 
-// Fetch all products
+// Fetch all products with images
 export const productsQuery = groq`
-  *[_type == "product"] {
+  *[_type == "product" && defined(gallery) && length(gallery) > 0] {
     _id,
     referencia,
     "slug": slug.current,
@@ -130,9 +130,9 @@ export const productsQuery = groq`
   }
 `
 
-// Fetch a single product by slug
+// Fetch a single product by slug (only with images)
 export const productBySlugQuery = groq`
-  *[_type == "product" && slug.current == $slug][0] {
+  *[_type == "product" && slug.current == $slug && defined(gallery) && length(gallery) > 0][0] {
     _id,
     referencia,
     "slug": slug.current,

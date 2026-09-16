@@ -506,25 +506,32 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
       </section>
 
       {/* Related Products */}
-      {relatedProducts.length > 0 && (
-        <section className="py-16 bg-light">
-          <div className="mx-auto max-w-7xl px-6">
-            <h2 className="text-2xl font-bold text-charcoal mb-8 flex items-center gap-2">
-              <Icon icon="ph:squares-four-light" className="w-6 h-6 text-teal" />
-              Otros productos que te pueden interesar
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {relatedProducts.map((p) => {
-                const pImages = p.gallery || []
-                const pImg = pImages.length > 0 ? pImages[0] : null
-                return (
-                  <Link
-                    key={p.slug.current}
-                    href={`/tienda/${p.slug.current}`}
-                    className="bg-white rounded-xl border border-charcoal/5 p-4 hover:shadow-lg transition-all group"
-                  >
-                    <div className="aspect-square bg-gray-50 rounded-lg flex items-center justify-center mb-3 overflow-hidden">
-                      {pImg ? (
+      {(() => {
+        const validRelated = (relatedProducts || []).filter((p) => {
+          const pImages = p.gallery || []
+          return pImages.length > 0 && Boolean(pImages[0])
+        })
+        if (validRelated.length === 0) return null
+
+        return (
+          <section className="py-16 bg-light">
+            <div className="mx-auto max-w-7xl px-6">
+              <h2 className="text-2xl font-bold text-charcoal mb-8 flex items-center gap-2">
+                <Icon icon="ph:squares-four-light" className="w-6 h-6 text-teal" />
+                Otros productos que te pueden interesar
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {validRelated.map((p) => {
+                  const pImages = p.gallery || []
+                  const pImg = pImages[0]
+                  const pSlug = typeof p.slug === "object" ? p.slug?.current : p.slug
+                  return (
+                    <Link
+                      key={pSlug}
+                      href={`/tienda/${pSlug}`}
+                      className="bg-white rounded-xl border border-charcoal/5 p-4 hover:shadow-lg transition-all group"
+                    >
+                      <div className="aspect-square bg-gray-50 rounded-lg flex items-center justify-center mb-3 overflow-hidden">
                         <Image
                           src={pImg}
                           alt={`${p.referencia} - Suplemento dietario`}
@@ -532,24 +539,22 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                           height={200}
                           className="w-[80%] h-[80%] object-contain group-hover:scale-105 transition-transform duration-300"
                         />
-                      ) : (
-                        <Icon icon="ph:image-light" className="w-8 h-8 text-charcoal/20" />
-                      )}
-                    </div>
-                    <h3 className="text-xs font-bold text-charcoal mb-1 line-clamp-2 group-hover:text-teal transition-colors">
-                      {p.referencia}
-                    </h3>
-                    <div className="flex items-center gap-1 text-[10px] text-teal font-medium">
-                      <Icon icon="ph:shield-check-light" className="w-3 h-3" />
-                      {p.registroInvima}
-                    </div>
-                  </Link>
-                )
-              })}
+                      </div>
+                      <h3 className="text-xs font-bold text-charcoal mb-1 line-clamp-2 group-hover:text-teal transition-colors">
+                        {p.referencia}
+                      </h3>
+                      <div className="flex items-center gap-1 text-[10px] text-teal font-medium">
+                        <Icon icon="ph:shield-check-light" className="w-3 h-3" />
+                        {p.registroInvima}
+                      </div>
+                    </Link>
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        </section>
-      )}
+          </section>
+        )
+      })()}
 
       {/* Gallery Modal */}
       <ProductGallery

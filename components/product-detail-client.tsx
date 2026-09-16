@@ -11,6 +11,8 @@ import { useCart } from "@/lib/cart-context"
 import { urlFor } from "@/sanity/lib/image"
 import { toast } from "sonner"
 
+import type { ProductPresentation } from "@/lib/products"
+
 interface Product {
   _id: string
   referencia: string
@@ -24,6 +26,7 @@ interface Product {
   modoDeUso?: string
   advertencia?: string
   categoria: string
+  presentaciones?: ProductPresentation[]
   gallery?: string[]
 }
 
@@ -43,22 +46,47 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const currentImage = images.length > 0 ? images[selectedImage] : null
   const galleryImageUrls = images
 
+  const presentations: ProductPresentation[] =
+    product.presentaciones && product.presentaciones.length > 0
+      ? product.presentaciones
+      : [
+          {
+            nombre: "Plegadiza",
+            precio: product.price,
+            cantidad: product.cantidad || "Caja Plegadiza",
+          },
+        ]
+
+  const [selectedPresentationIndex, setSelectedPresentationIndex] = useState(0)
+  const currentPresentation =
+    presentations[selectedPresentationIndex] || presentations[0]
+
+  const activePrice = currentPresentation ? currentPresentation.precio : product.price
+  const activeCantidad = currentPresentation?.cantidad || product.cantidad
+  const activePeso =
+    currentPresentation?.peso && currentPresentation.peso !== "aun no disp"
+      ? currentPresentation.peso
+      : null
+
   // Format to match standard cart logic expectations
   const cartProduct = {
     slug: product.slug.current,
     referencia: product.referencia,
-    price: product.price,
+    price: activePrice,
     originalPrice: product.originalPrice,
-    cantidad: product.cantidad,
+    cantidad: activeCantidad,
     registroInvima: product.registroInvima,
     beneficios: product.beneficios,
     categoria: product.categoria,
-    gallery: images
+    selectedPresentation: currentPresentation?.nombre,
+    gallery: images,
   }
 
   const handleAddToCart = () => {
     addItem(cartProduct, quantity)
-    toast.success(`Se agregaron ${quantity} unidades de ${product.referencia} al carrito.`)
+    toast.success(
+      `Se agregaron ${quantity} unidades de ${product.referencia} (${currentPresentation?.nombre || "Presentación"}) al carrito.`
+    )
     setQuantity(1)
   }
 
@@ -167,28 +195,96 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 </div>
               </div>
 
-              {/* Price */}
-              <div className="mb-6 flex items-end gap-3">
+              {/* Selector de Presentación */}
+              {presentations.length > 1 && (
+                <div className="mb-6">
+                  <label className="block text-xs font-bold text-charcoal/70 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                    <Icon icon="ph:package-light" className="w-4 h-4 text-teal" />
+                    Selecciona Presentación
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    {presentations.map((pres, idx) => {
+                      const isSelected = idx === selectedPresentationIndex
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => setSelectedPresentationIndex(idx)}
+                          className={`p-3.5 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between ${
+                            isSelected
+                              ? "border-teal bg-teal/5 ring-2 ring-teal/20 shadow-sm"
+                              : "border-charcoal/15 bg-white hover:border-charcoal/30 hover:bg-gray-50/50"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span
+                              className={`text-sm font-bold ${
+                                isSelected ? "text-teal" : "text-charcoal"
+                              }`}
+                            >
+                              {pres.nombre}
+                            </span>
+                            {isSelected && (
+                              <Icon
+                                icon="ph:check-circle-fill"
+                                className="w-4 h-4 text-teal"
+                              />
+                            )}
+                          </div>
+                          <div className="flex items-baseline justify-between mt-auto">
+                            <span className="text-base font-extrabold text-charcoal">
+                              ${pres.precio.toLocaleString("es-CO")}
+                            </span>
+                            {pres.peso && pres.peso !== "aun no disp" && (
+                              <span className="text-[11px] font-medium text-charcoal/45 bg-charcoal/5 px-2 py-0.5 rounded-full">
+                                {pres.peso}
+                              </span>
+                            )}
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Price & Weight */}
+              <div className="mb-6 flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
                 <div className="flex flex-col">
-                  {(!product.price || product.price <= 0) ? (
+                  {(!activePrice || activePrice <= 0) ? (
                     <span className="text-3xl font-bold text-orange">
                       Próximamente
                     </span>
                   ) : (
                     <>
-                      {product.originalPrice && (
+                      {product.originalPrice && product.originalPrice > activePrice && (
                         <span className="text-sm text-charcoal/30 line-through decoration-charcoal/20 mb-[-4px]">
                           ${product.originalPrice.toLocaleString("es-CO")}
                         </span>
                       )}
-                      <span className="text-3xl font-bold text-charcoal">
-                        ${product.price.toLocaleString("es-CO")}
-                      </span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-3xl md:text-4xl font-extrabold text-charcoal">
+                          ${activePrice.toLocaleString("es-CO")}
+                        </span>
+                        <span className="text-xs font-bold text-charcoal/40 uppercase">
+                          COP
+                        </span>
+                      </div>
                     </>
                   )}
                 </div>
-                {product.price > 0 && (
-                  <span className="text-sm text-charcoal/40 pb-1.5">{product.cantidad}</span>
+                {activePrice > 0 && (
+                  <div className="flex flex-col sm:pb-1">
+                    <span className="text-xs text-charcoal/60 font-medium">
+                      {activeCantidad}
+                    </span>
+                    {activePeso && (
+                      <span className="text-[11px] text-teal font-medium flex items-center gap-1 mt-0.5">
+                        <Icon icon="ph:scales-light" className="w-3.5 h-3.5 text-teal" />
+                        Peso neto aprox: {activePeso}
+                      </span>
+                    )}
+                  </div>
                 )}
               </div>
 
@@ -231,7 +327,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 </div>
               )}
               {/* Quantity + Add to cart */}
-              {(!product.price || product.price <= 0) ? (
+              {(!activePrice || activePrice <= 0) ? (
                 <div className="mt-auto pt-6 border-t border-charcoal/5">
                   <div className="flex items-center gap-3 bg-orange/5 border border-orange/15 rounded-2xl p-4 text-orange">
                     <Icon icon="ph:clock-light" className="w-5 h-5 flex-shrink-0" />

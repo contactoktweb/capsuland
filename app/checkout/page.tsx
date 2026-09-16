@@ -375,7 +375,7 @@ const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
                     const img = getMainImage(item.product)
                     return (
                       <div
-                        key={item.product.slug}
+                        key={item.id || item.product.slug}
                         className="flex gap-3 bg-white rounded-xl p-3 border border-charcoal/5"
                       >
                         <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
@@ -396,16 +396,23 @@ const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
                           <h3 className="text-xs font-bold text-charcoal truncate">
                             {item.product.referencia}
                           </h3>
-                          <div className="flex items-center gap-1 text-[10px] text-teal font-medium mt-0.5">
-                            <Icon icon="ph:shield-check-light" className="w-3 h-3" />
-                            {item.product.registroInvima}
+                          <div className="flex items-center gap-1.5 flex-wrap mt-0.5">
+                            {item.product.selectedPresentation && (
+                              <span className="text-[10px] font-semibold text-teal bg-teal/10 px-1.5 py-0.5 rounded">
+                                {item.product.selectedPresentation}
+                              </span>
+                            )}
+                            <div className="flex items-center gap-1 text-[10px] text-teal font-medium">
+                              <Icon icon="ph:shield-check-light" className="w-3 h-3" />
+                              {item.product.registroInvima}
+                            </div>
                           </div>
 
                           <div className="flex items-center justify-between mt-2">
                             <div className="flex items-center gap-1">
                               <button
                                 onClick={() =>
-                                  updateQuantity(item.product.slug, item.quantity - 1)
+                                  updateQuantity(item.id || item.product.slug, item.quantity - 1)
                                 }
                                 className="w-6 h-6 rounded-md border border-charcoal/15 flex items-center justify-center text-charcoal/50 hover:bg-charcoal/5"
                               >
@@ -416,7 +423,7 @@ const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
                               </span>
                               <button
                                 onClick={() =>
-                                  updateQuantity(item.product.slug, item.quantity + 1)
+                                  updateQuantity(item.id || item.product.slug, item.quantity + 1)
                                 }
                                 className="w-6 h-6 rounded-md border border-charcoal/15 flex items-center justify-center text-charcoal/50 hover:bg-charcoal/5"
                               >
@@ -439,7 +446,7 @@ const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
                                 </span>
                               </div>
                               <button
-                                onClick={() => removeItem(item.product.slug)}
+                                onClick={() => removeItem(item.id || item.product.slug)}
                                 className="text-charcoal/30 hover:text-red-500 transition-colors"
                                 aria-label={`Eliminar ${item.product.referencia}`}
                               >

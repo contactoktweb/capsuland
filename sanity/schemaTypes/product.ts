@@ -70,6 +70,51 @@ export default defineType({
       type: "number",
     }),
     defineField({
+      name: "presentaciones",
+      title: "Presentaciones / Variantes",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "nombre",
+              title: "Nombre de Presentación (ej: Plegadiza, Frasco x 60)",
+              type: "string",
+            },
+            {
+              name: "precio",
+              title: "Precio (COP)",
+              type: "number",
+            },
+            {
+              name: "peso",
+              title: "Peso (ej: 31,93g, 78g)",
+              type: "string",
+            },
+            {
+              name: "cantidad",
+              title: "Descripción de Cantidad (ej: Cantidad x 60 cápsulas blandas)",
+              type: "string",
+            },
+          ],
+          preview: {
+            select: {
+              title: "nombre",
+              precio: "precio",
+              peso: "peso",
+            },
+            prepare({ title, precio, peso }) {
+              return {
+                title: title || "Presentación",
+                subtitle: `$${precio ? Number(precio).toLocaleString("es-CO") : 0} COP ${peso ? `• ${peso}` : ""}`,
+              }
+            },
+          },
+        },
+      ],
+    }),
+    defineField({
       name: "gallery",
       title: "Galería de Imágenes",
       type: "array",

@@ -91,7 +91,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
 
                       return (
                         <motion.div
-                          key={item.product.slug}
+                          key={item.id || item.product.slug}
                           layout
                           initial={{ opacity: 0, x: 20 }}
                           animate={{ opacity: 1, x: 0 }}
@@ -119,9 +119,16 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                             <h3 className="text-xs font-bold text-charcoal truncate mb-0.5">
                               {item.product.referencia}
                             </h3>
-                            <div className="flex items-center gap-1 text-[10px] text-teal font-medium">
-                              <Icon icon="ph:shield-check-light" className="w-3 h-3" />
-                              {item.product.registroInvima}
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              {item.product.selectedPresentation && (
+                                <span className="text-[10px] font-semibold text-teal bg-teal/10 px-1.5 py-0.5 rounded">
+                                  {item.product.selectedPresentation}
+                                </span>
+                              )}
+                              <div className="flex items-center gap-1 text-[10px] text-teal font-medium">
+                                <Icon icon="ph:shield-check-light" className="w-3 h-3" />
+                                {item.product.registroInvima}
+                              </div>
                             </div>
 
                             <div className="flex items-center justify-between mt-2">
@@ -130,7 +137,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                 <button
                                   onClick={() =>
                                     updateQuantity(
-                                      item.product.slug,
+                                      item.id || item.product.slug,
                                       item.quantity - 1
                                     )
                                   }
@@ -145,7 +152,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                 <button
                                   onClick={() =>
                                     updateQuantity(
-                                      item.product.slug,
+                                      item.id || item.product.slug,
                                       item.quantity + 1
                                     )
                                   }
@@ -174,7 +181,7 @@ export default function CartSidebar({ isOpen, onClose }: CartSidebarProps) {
                                   </span>
                                 </div>
                                 <button
-                                  onClick={() => removeItem(item.product.slug)}
+                                  onClick={() => removeItem(item.id || item.product.slug)}
                                   className="text-charcoal/30 hover:text-red-500 transition-colors"
                                   aria-label={`Eliminar ${item.product.referencia}`}
                                 >

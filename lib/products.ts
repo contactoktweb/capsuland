@@ -21,6 +21,13 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
   "Bienestar Femenino",
 ]
 
+export interface ProductPresentation {
+  nombre: string
+  precio: number
+  peso?: string
+  cantidad?: string
+}
+
 export interface Product {
   _id?: string
   referencia: string
@@ -33,6 +40,8 @@ export interface Product {
   cantidad?: string
   price: number
   originalPrice?: number
+  presentaciones?: ProductPresentation[]
+  selectedPresentation?: string
   gallery?: string[]
   images?: any[]
   categoria: any
@@ -52,8 +61,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 32900,
-    originalPrice: 45000,
+    price: 31193,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 31193,
+        peso: "31,93g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 56148,
+        peso: "78g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Biotina/Biotina-frontal.png",
       "/productos/Biotina/Biotina-Frasco-Frontal.png",
@@ -76,7 +98,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento and no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 28900,
+    price: 31193,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 31193,
+        peso: "31,5g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 56148,
+        peso: "75g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Calcio 400/Calcio-400-frontal.png",
       "/productos/Calcio 400/Calcio-Frasco-Frontal.png",
@@ -85,6 +121,36 @@ export const products: Product[] = [
       "/productos/Calcio 400/Calcio-400-back.png",
       "/productos/Calcio 400/Calcio-Frasco--Barcode.png",
     ],
+  },
+  {
+    referencia: "CALOSTRO BOVINO",
+    slug: "calostro-bovino",
+    categoria: "Proteínas",
+    registroInvima: "SD2024-0001722-R1",
+    beneficios:
+      "Aporta calostro bovino, fuente natural de proteínas y compuestos bioactivos que contribuyen a complementar la nutrición y al bienestar del sistema inmune.",
+    descripcion:
+      "Fuente natural de proteínas, vitaminas, minerales, ácidos grasos y péptidos bioactivos que contribuyen al soporte nutricional general del organismo. Apoya el equilibrio del sistema inmune y puede favorecer la función digestiva, especialmente en etapas que requieren un mayor aporte nutricional. Contribuye al mantenimiento de la vitalidad y al bienestar general, como parte de una alimentación balanceada.",
+    advertencia:
+      "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
+    modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
+    cantidad: "Cantidad x 60 cápsulas blandas",
+    price: 34910,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 34910,
+        peso: "56g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 62838,
+        peso: "aun no disp",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
+    gallery: [],
   },
   {
     referencia: "CLA 1000 mg",
@@ -99,7 +165,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 38401,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 38401,
+        peso: "aun no disp",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 69122,
+        peso: "aun no disp",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [],
   },
   {
@@ -115,7 +195,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 31193,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 31193,
+        peso: "31,93g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 56148,
+        peso: "74g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Colageno/Colageno-frontal.png",
       "/productos/Colageno/Colageno-Frasco-frontal.png",
@@ -138,8 +232,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 38900,
-    originalPrice: 52000,
+    price: 31193,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 31193,
+        peso: "38,54g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 56148,
+        peso: "81g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Colageno + Biotina/Colageno-+-Biotina-Frontal.png",
       "/productos/Colageno + Biotina/Colageno-+-Biotina-Frasco-Frontal.png",
@@ -162,7 +269,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 31517,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 31517,
+        peso: "55g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 56730,
+        peso: "116g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Complejo B/Complejo-B-Frontal.png",
       "/productos/Complejo B/Complejo-B-Frasco-Frontal.png",
@@ -185,7 +306,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 38401,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 38401,
+        peso: "aun no disp",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 69122,
+        peso: "aun no disp",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [],
   },
   {
@@ -201,7 +336,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 184325,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 184325,
+        peso: "aun no disp",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 331785,
+        peso: "aun no disp",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [],
   },
   {
@@ -217,7 +366,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 34910,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 34910,
+        peso: "34,59g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 62838,
+        peso: "72g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Isoflavonas/Isoflavona-frontal.png",
       "/productos/Isoflavonas/Isoflavonas-Frasco-Frontal.png",
@@ -240,7 +403,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 38401,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 38401,
+        peso: "aun no disp",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 69122,
+        peso: "aun no disp",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [],
   },
   {
@@ -256,7 +433,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 34910,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 34910,
+        peso: "64g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 62838,
+        peso: "aun no disp",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [],
   },
   {
@@ -272,7 +463,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 31527,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 31527,
+        peso: "54,49g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 56748,
+        peso: "116g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Omega 3/Omega-3-frontal.png",
       "/productos/Omega 3/Omega-3-Frasco-Frontal.png",
@@ -295,7 +500,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 37290,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 37290,
+        peso: "54,49g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 67122,
+        peso: "121g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Omega 3, 6 y 9/Omega-3-6-9-frontal.png",
       "/productos/Omega 3, 6 y 9/Omega-3-6-y-9-Frasco-Frontal.png",
@@ -317,9 +536,23 @@ export const products: Product[] = [
       "Contiene espirulina, microalga reconocida por su contenido natural de proteínas, vitaminas y minerales. Fuente de compuestos antioxidantes que forman parte de los procesos de protección celular frente al estrés oxidativo. Complementa la nutrición diaria, aportando nutrientes de origen natural dentro de una alimentación equilibrada.",
     advertencia:
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
-    modoDeUso: "",
+    modoDeUso: "Adultos, tomar 2 cápsulas blandas al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 38401,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 38401,
+        peso: "aun no disp",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 69122,
+        peso: "aun no disp",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [],
   },
   {
@@ -335,7 +568,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 36357,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 36357,
+        peso: "62,94g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 65442,
+        peso: "118g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Vita E 1000/Vita-E-1000-Plus-Selenium-Frontal.png",
       "/productos/Vita E 1000/Vitamina-E-1000-Frontal.png",
@@ -358,7 +605,21 @@ export const products: Product[] = [
       "Este producto es un suplemento dietario, no es un medicamento y no suple una alimentación equilibrada. Puede causar hipersensibilidad. No consumir en estado de embarazo y lactancia. Mantener fuera del alcance de los niños. Almacenar a temperatura inferior a 30°C y humedad relativa menor a 75%.",
     modoDeUso: "Adultos, tomar 1 cápsula blanda al día",
     cantidad: "Cantidad x 60 cápsulas blandas",
-    price: 0,
+    price: 34910,
+    presentaciones: [
+      {
+        nombre: "Plegadiza",
+        precio: 34910,
+        peso: "40,06g",
+        cantidad: "Caja Plegadiza",
+      },
+      {
+        nombre: "Frasco x 60",
+        precio: 62838,
+        peso: "75g",
+        cantidad: "Cantidad x 60 cápsulas blandas",
+      },
+    ],
     gallery: [
       "/productos/Vita E 400/Vita-E-400-frontal.png",
       "/productos/Vita E 400/Vitamina-E-400-Frontal.png",
@@ -399,7 +660,6 @@ export function getMainImage(product: any): string | null {
   if (COMBO_FALLBACK[product.slug]) return COMBO_FALLBACK[product.slug]
   return null
 }
-
 
 /** Busca un producto por su slug */
 export function getProductBySlug(slug: string): Product | undefined {

@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useCallback, type ReactNode } from
 import type { Product } from "@/lib/products"
 
 export interface CartItem {
+  id: string
   product: Product
   quantity: number
 }
@@ -11,8 +12,8 @@ export interface CartItem {
 interface CartContextValue {
   items: CartItem[]
   addItem: (product: Product, quantity?: number) => void
-  removeItem: (slug: string) => void
-  updateQuantity: (slug: string, quantity: number) => void
+  removeItem: (idOrSlug: string) => void
+  updateQuantity: (idOrSlug: string, quantity: number) => void
   clearCart: () => void
   totalItems: number
   totalPrice: number
@@ -25,30 +26,39 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const addItem = useCallback((product: Product, quantity = 1) => {
     setItems((prev) => {
-      const existing = prev.find((i) => i.product.slug === product.slug)
-      if (existing) {
-        return prev.map((i) =>
-          i.product.slug === product.slug
-            ? { ...i, quantity: i.quantity + quantity }
-            : i
+      const id = product.selectedPresentation
+        ? `${product.slug}__${product.selectedPresentation}`
+        : `${product.slug}`
+
+      const existingIndex = prev.findIndex(
+        (i) => i.id === id || (!product.selectedPresentation && !i.product.selectedPresentation && i.product.slug === product.slug)
+      )
+
+      if (existingIndex > -1) {
+        return prev.map((item, idx) =>
+          idx === existingIndex
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
         )
       }
-      return [...prev, { product, quantity }]
+      return [...prev, { id, product, quantity }]
     })
   }, [])
 
-  const removeItem = useCallback((slug: string) => {
-    setItems((prev) => prev.filter((i) => i.product.slug !== slug))
+  const removeItem = useCallback((idOrSlug: string) => {
+    setItems((prev) => prev.filter((i) => i.id !== idOrSlug && i.product.slug !== idOrSlug))
   }, [])
 
-  const updateQuantity = useCallback((slug: string, quantity: number) => {
+  const updateQuantity = useCallback((idOrSlug: string, quantity: number) => {
     if (quantity <= 0) {
-      setItems((prev) => prev.filter((i) => i.product.slug !== slug))
+      setItems((prev) => prev.filter((i) => i.id !== idOrSlug && i.product.slug !== idOrSlug))
       return
     }
     setItems((prev) =>
       prev.map((i) =>
-        i.product.slug === slug ? { ...i, quantity } : i
+        i.id === idOrSlug || (i.product.slug === idOrSlug && !i.product.selectedPresentation)
+          ? { ...i, quantity }
+          : i
       )
     )
   }, [])

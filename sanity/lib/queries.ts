@@ -117,6 +117,12 @@ export const productsQuery = groq`
     cantidad,
     price,
     originalPrice,
+    presentaciones[] {
+      nombre,
+      precio,
+      peso,
+      cantidad
+    },
     "gallery": gallery[].asset->url
   }
 `
@@ -136,6 +142,12 @@ export const productBySlugQuery = groq`
     cantidad,
     price,
     originalPrice,
+    presentaciones[] {
+      nombre,
+      precio,
+      peso,
+      cantidad
+    },
     "gallery": gallery[].asset->url
   }
 `

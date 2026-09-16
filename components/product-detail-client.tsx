@@ -46,14 +46,20 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const currentImage = images.length > 0 ? images[selectedImage] : null
   const galleryImageUrls = images
 
+  // Clean title: remove redundant 'x 60 Softgels', 'x 30 Softgels' if present in the raw string
+  const cleanTitle = (product.referencia || "")
+    .replace(/\s*x\s*(30|60)\s*(softgels?|c[aá]psulas?|bl[ií]sters?)/gi, "")
+    .trim()
+
   const presentations: ProductPresentation[] =
     product.presentaciones && product.presentaciones.length > 0
       ? product.presentaciones
       : [
           {
-            nombre: "Plegadiza",
+            nombre: "30 Cápsulas",
+            formato: "Caja Plegadiza",
             precio: product.price,
-            cantidad: product.cantidad || "Caja Plegadiza",
+            cantidad: product.cantidad || "30 cápsulas blandas",
           },
         ]
 
@@ -61,31 +67,86 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const currentPresentation =
     presentations[selectedPresentationIndex] || presentations[0]
 
+  const getPresentationDetails = (pres: ProductPresentation, idx: number) => {
+    const nameLower = (pres.nombre || "").toLowerCase()
+    const formatLower = (pres.formato || "").toLowerCase()
+
+    const is30 =
+      nameLower.includes("30") ||
+      nameLower.includes("plegadiza") ||
+      formatLower.includes("plegadiza") ||
+      idx === 0
+
+    const versionTitle = is30 ? "30 Cápsulas" : "60 Cápsulas"
+    const formatoTitle = pres.formato || (is30 ? "Caja Plegadiza" : "Frasco")
+    const peso = pres.peso && pres.peso !== "aun no disp" ? pres.peso : null
+
+    return {
+      versionTitle,
+      formatoTitle,
+      peso,
+      is30,
+    }
+  }
+
+  const currentDisplay = getPresentationDetails(
+    currentPresentation,
+    selectedPresentationIndex
+  )
+
   const activePrice = currentPresentation ? currentPresentation.precio : product.price
-  const activeCantidad = currentPresentation?.cantidad || product.cantidad
-  const activePeso =
-    currentPresentation?.peso && currentPresentation.peso !== "aun no disp"
-      ? currentPresentation.peso
-      : null
+  const activeCantidad =
+    currentPresentation?.cantidad ||
+    `${currentDisplay.versionTitle} (${currentDisplay.formatoTitle})`
+  const activePeso = currentDisplay.peso
+
+  const handleSelectPresentation = (idx: number) => {
+    setSelectedPresentationIndex(idx)
+    const pres = presentations[idx]
+    if (!pres || images.length <= 1) return
+
+    const { is30 } = getPresentationDetails(pres, idx)
+    if (is30) {
+      // Find box/plegadiza image without "frasco"
+      const boxIdx = images.findIndex((img) => {
+        const lower = (img || "").toLowerCase()
+        return !lower.includes("frasco") && (lower.includes("front") || lower.includes("perfil"))
+      })
+      if (boxIdx !== -1) {
+        setSelectedImage(boxIdx)
+      } else {
+        setSelectedImage(0)
+      }
+    } else {
+      // Find frasco image
+      const frascoIdx = images.findIndex((img) => {
+        const lower = (img || "").toLowerCase()
+        return lower.includes("frasco") && (lower.includes("front") || lower.includes("iz"))
+      })
+      if (frascoIdx !== -1) {
+        setSelectedImage(frascoIdx)
+      }
+    }
+  }
 
   // Format to match standard cart logic expectations
   const cartProduct = {
     slug: product.slug.current,
-    referencia: product.referencia,
+    referencia: `${cleanTitle} (${currentDisplay.versionTitle})`,
     price: activePrice,
     originalPrice: product.originalPrice,
-    cantidad: activeCantidad,
+    cantidad: `${currentDisplay.versionTitle} • ${currentDisplay.formatoTitle}`,
     registroInvima: product.registroInvima,
     beneficios: product.beneficios,
     categoria: product.categoria,
-    selectedPresentation: currentPresentation?.nombre,
+    selectedPresentation: `${currentDisplay.versionTitle} (${currentDisplay.formatoTitle})`,
     gallery: images,
   }
 
   const handleAddToCart = () => {
     addItem(cartProduct, quantity)
     toast.success(
-      `Se agregaron ${quantity} unidades de ${product.referencia} (${currentPresentation?.nombre || "Presentación"}) al carrito.`
+      `Se agregaron ${quantity} unidades de ${cleanTitle} (${currentDisplay.versionTitle}) al carrito.`
     )
     setQuantity(1)
   }
@@ -117,7 +178,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 {currentImage ? (
                   <Image
                     src={currentImage}
-                    alt={`${product.referencia} - Vista principal`}
+                    alt={`${cleanTitle} - Vista principal`}
                     width={700}
                     height={700}
                     className="w-full h-full object-contain p-8 hover:scale-105 transition-transform duration-500"
@@ -141,24 +202,22 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
               {/* Thumbnails */}
               {images.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pb-2">
+                <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
                   {images.map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`relative w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden border-2 transition-all duration-200 flex-shrink-0 ${
-                        idx === selectedImage
-                          ? "border-teal ring-2 ring-teal/20"
-                          : "border-charcoal/10 hover:border-charcoal/30"
+                      className={`relative w-20 h-20 rounded-xl bg-gray-50 border-2 overflow-hidden flex-shrink-0 transition-all ${
+                        selectedImage === idx
+                          ? "border-teal scale-105 shadow-sm"
+                          : "border-transparent opacity-60 hover:opacity-100"
                       }`}
-                      aria-label={`Ver imagen ${idx + 1}`}
                     >
                       <Image
                         src={img}
-                        alt={`${product.referencia} miniatura ${idx + 1}`}
-                        width={80}
-                        height={80}
-                        className="w-full h-full object-contain p-1 bg-gray-50"
+                        alt={`${cleanTitle} miniatura ${idx + 1}`}
+                        fill
+                        className="object-contain p-2"
                       />
                     </button>
                   ))}
@@ -181,7 +240,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
               {/* Product Name */}
               <h1 className="text-3xl md:text-4xl font-bold text-charcoal mb-4 leading-tight">
-                {product.referencia}
+                {cleanTitle}
               </h1>
 
               {/* INVIMA Badge */}
@@ -195,60 +254,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 </div>
               </div>
 
-              {/* Selector de Presentación */}
-              {presentations.length > 1 && (
-                <div className="mb-6">
-                  <label className="block text-xs font-bold text-charcoal/70 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                    <Icon icon="ph:package-light" className="w-4 h-4 text-teal" />
-                    Selecciona Presentación
-                  </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    {presentations.map((pres, idx) => {
-                      const isSelected = idx === selectedPresentationIndex
-                      return (
-                        <button
-                          key={idx}
-                          type="button"
-                          onClick={() => setSelectedPresentationIndex(idx)}
-                          className={`p-3.5 rounded-2xl border text-left transition-all duration-200 flex flex-col justify-between ${
-                            isSelected
-                              ? "border-teal bg-teal/5 ring-2 ring-teal/20 shadow-sm"
-                              : "border-charcoal/15 bg-white hover:border-charcoal/30 hover:bg-gray-50/50"
-                          }`}
-                        >
-                          <div className="flex items-center justify-between mb-1.5">
-                            <span
-                              className={`text-sm font-bold ${
-                                isSelected ? "text-teal" : "text-charcoal"
-                              }`}
-                            >
-                              {pres.nombre}
-                            </span>
-                            {isSelected && (
-                              <Icon
-                                icon="ph:check-circle-fill"
-                                className="w-4 h-4 text-teal"
-                              />
-                            )}
-                          </div>
-                          <div className="flex items-baseline justify-between mt-auto">
-                            <span className="text-base font-extrabold text-charcoal">
-                              ${pres.precio.toLocaleString("es-CO")}
-                            </span>
-                            {pres.peso && pres.peso !== "aun no disp" && (
-                              <span className="text-[11px] font-medium text-charcoal/45 bg-charcoal/5 px-2 py-0.5 rounded-full">
-                                {pres.peso}
-                              </span>
-                            )}
-                          </div>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Price & Weight */}
+              {/* Price & Current Version Info */}
               <div className="mb-6 flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
                 <div className="flex flex-col">
                   {(!activePrice || activePrice <= 0) ? (
@@ -275,8 +281,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 </div>
                 {activePrice > 0 && (
                   <div className="flex flex-col sm:pb-1">
-                    <span className="text-xs text-charcoal/60 font-medium">
-                      {activeCantidad}
+                    <span className="text-xs text-charcoal/70 font-semibold flex items-center gap-1.5">
+                      <Icon icon="ph:check-circle-fill" className="w-3.5 h-3.5 text-teal" />
+                      {currentDisplay.versionTitle} • {currentDisplay.formatoTitle}
                     </span>
                     {activePeso && (
                       <span className="text-[11px] text-teal font-medium flex items-center gap-1 mt-0.5">
@@ -287,6 +294,83 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   </div>
                 )}
               </div>
+
+              {/* Selector de Versión (30 Cápsulas vs 60 Cápsulas) */}
+              {presentations.length > 1 && (
+                <div className="mb-8 p-4 rounded-2xl bg-gradient-to-br from-charcoal/[0.02] to-teal/[0.03] border border-charcoal/10">
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-xs font-bold text-charcoal uppercase tracking-wider flex items-center gap-1.5">
+                      <Icon icon="ph:stack-light" className="w-4 h-4 text-teal" />
+                      Selecciona la versión del producto:
+                    </label>
+                    <span className="text-[11px] font-bold text-teal bg-teal/10 px-2.5 py-0.5 rounded-full">
+                      2 versiones disponibles
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {presentations.map((pres, idx) => {
+                      const isSelected = idx === selectedPresentationIndex
+                      const details = getPresentationDetails(pres, idx)
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => handleSelectPresentation(idx)}
+                          className={`p-3.5 rounded-2xl border text-left transition-all duration-200 relative flex flex-col justify-between ${
+                            isSelected
+                              ? "border-teal bg-white ring-2 ring-teal shadow-md"
+                              : "border-charcoal/15 bg-white hover:border-charcoal/30 hover:bg-gray-50/60"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="flex items-center gap-1.5">
+                              <Icon
+                                icon={details.is30 ? "ph:package-light" : "ph:flask-light"}
+                                className={`w-4 h-4 ${
+                                  isSelected ? "text-teal" : "text-charcoal/50"
+                                }`}
+                              />
+                              <span
+                                className={`text-sm md:text-base font-bold ${
+                                  isSelected ? "text-teal" : "text-charcoal"
+                                }`}
+                              >
+                                {details.versionTitle}
+                              </span>
+                            </div>
+                            {isSelected ? (
+                              <Icon
+                                icon="ph:check-circle-fill"
+                                className="w-5 h-5 text-teal flex-shrink-0"
+                              />
+                            ) : (
+                              <div className="w-4 h-4 rounded-full border border-charcoal/20 flex-shrink-0" />
+                            )}
+                          </div>
+
+                          <div className="flex items-center justify-between text-xs text-charcoal/60 mb-2">
+                            <span>{details.formatoTitle}</span>
+                            {details.peso && (
+                              <span className="text-[11px] bg-charcoal/5 px-2 py-0.5 rounded-full font-medium">
+                                {details.peso}
+                              </span>
+                            )}
+                          </div>
+
+                          <div className="pt-2 border-t border-charcoal/5 flex items-baseline justify-between mt-auto">
+                            <span className="text-base font-extrabold text-charcoal">
+                              ${pres.precio ? pres.precio.toLocaleString("es-CO") : "0"}
+                            </span>
+                            <span className="text-[10px] uppercase font-bold text-charcoal/40">
+                              COP
+                            </span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
 
               {/* Beneficios */}
               <div className="mb-6">

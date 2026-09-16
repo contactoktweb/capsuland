@@ -242,7 +242,9 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                     <div className="p-5 flex flex-col flex-grow">
                       <Link href={`/tienda/${product.slug}`}>
                         <h2 className="text-sm font-bold text-charcoal mb-2 leading-tight min-h-[40px] flex items-start hover:text-teal transition-colors">
-                          {product.referencia}
+                          {(product.referencia || "")
+                            .replace(/\s*x\s*(30|60)\s*(softgels?|c[aá]psulas?|bl[ií]sters?)/gi, "")
+                            .trim()}
                         </h2>
                       </Link>
 
@@ -298,8 +300,9 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                                       ${displayPrice.toLocaleString("es-CO")}
                                     </span>
                                     {hasPresentaciones && (
-                                      <span className="text-[10px] text-charcoal/40">
-                                        Plegadiza y Frasco
+                                      <span className="text-[10px] font-medium text-teal flex items-center gap-1">
+                                        <Icon icon="ph:stack-light" className="w-3 h-3" />
+                                        30 y 60 Cápsulas
                                       </span>
                                     )}
                                   </>
@@ -319,7 +322,7 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                                   href={`/tienda/${product.slug}`}
                                   className="inline-flex items-center gap-1.5 bg-teal hover:bg-teal-dark text-white text-xs font-semibold px-3.5 py-2 rounded-full transition-all hover:scale-105 shadow-sm shadow-teal/20"
                                 >
-                                  Ver opciones
+                                  Ver versiones
                                   <Icon icon="ph:arrow-right-light" className="w-3.5 h-3.5" />
                                 </Link>
                               ) : (

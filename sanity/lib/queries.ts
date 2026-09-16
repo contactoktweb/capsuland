@@ -119,6 +119,7 @@ export const productsQuery = groq`
     originalPrice,
     presentaciones[] {
       nombre,
+      formato,
       precio,
       peso,
       cantidad
@@ -144,6 +145,7 @@ export const productBySlugQuery = groq`
     originalPrice,
     presentaciones[] {
       nombre,
+      formato,
       precio,
       peso,
       cantidad

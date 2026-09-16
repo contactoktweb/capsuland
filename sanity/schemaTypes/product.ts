@@ -79,7 +79,12 @@ export default defineType({
           fields: [
             {
               name: "nombre",
-              title: "Nombre de Presentación (ej: Plegadiza, Frasco x 60)",
+              title: "Nombre de Versión (ej: 30 Cápsulas, 60 Cápsulas)",
+              type: "string",
+            },
+            {
+              name: "formato",
+              title: "Formato (ej: Caja Plegadiza, Frasco)",
               type: "string",
             },
             {

@@ -23,6 +23,7 @@ export const PRODUCT_CATEGORIES: ProductCategory[] = [
 
 export interface ProductPresentation {
   nombre: string
+  formato?: string
   precio: number
   peso?: string
   cantidad?: string
@@ -64,16 +65,18 @@ export const products: Product[] = [
     price: 31193,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 31193,
         peso: "31,93g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 56148,
         peso: "78g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [
@@ -101,16 +104,18 @@ export const products: Product[] = [
     price: 31193,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 31193,
         peso: "31,5g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 56148,
         peso: "75g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [
@@ -138,16 +143,18 @@ export const products: Product[] = [
     price: 34910,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 34910,
         peso: "56g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 62838,
         peso: "aun no disp",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [],
@@ -168,16 +175,18 @@ export const products: Product[] = [
     price: 38401,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 38401,
         peso: "aun no disp",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 69122,
         peso: "aun no disp",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [],
@@ -198,16 +207,18 @@ export const products: Product[] = [
     price: 31193,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 31193,
         peso: "31,93g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 56148,
         peso: "74g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [
@@ -235,16 +246,18 @@ export const products: Product[] = [
     price: 31193,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 31193,
         peso: "38,54g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 56148,
         peso: "81g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [
@@ -272,16 +285,18 @@ export const products: Product[] = [
     price: 31517,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 31517,
         peso: "55g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 56730,
         peso: "116g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [
@@ -309,16 +324,18 @@ export const products: Product[] = [
     price: 38401,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 38401,
         peso: "aun no disp",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 69122,
         peso: "aun no disp",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [],
@@ -339,16 +356,18 @@ export const products: Product[] = [
     price: 184325,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 184325,
         peso: "aun no disp",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 331785,
         peso: "aun no disp",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [],
@@ -369,16 +388,18 @@ export const products: Product[] = [
     price: 34910,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 34910,
         peso: "34,59g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 62838,
         peso: "72g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [
@@ -406,16 +427,18 @@ export const products: Product[] = [
     price: 38401,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 38401,
         peso: "aun no disp",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 69122,
         peso: "aun no disp",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [],
@@ -436,16 +459,18 @@ export const products: Product[] = [
     price: 34910,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 34910,
         peso: "64g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 62838,
         peso: "aun no disp",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [],
@@ -466,16 +491,18 @@ export const products: Product[] = [
     price: 31527,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 31527,
         peso: "54,49g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 56748,
         peso: "116g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [
@@ -503,16 +530,18 @@ export const products: Product[] = [
     price: 37290,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 37290,
         peso: "54,49g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 67122,
         peso: "121g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [
@@ -541,16 +570,18 @@ export const products: Product[] = [
     price: 38401,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 38401,
         peso: "aun no disp",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 69122,
         peso: "aun no disp",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [],
@@ -571,16 +602,18 @@ export const products: Product[] = [
     price: 36357,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 36357,
         peso: "62,94g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 65442,
         peso: "118g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [
@@ -608,16 +641,18 @@ export const products: Product[] = [
     price: 34910,
     presentaciones: [
       {
-        nombre: "Plegadiza",
+        nombre: "30 Cápsulas",
+        formato: "Caja Plegadiza",
         precio: 34910,
         peso: "40,06g",
-        cantidad: "Caja Plegadiza",
+        cantidad: "30 cápsulas blandas (Caja Plegadiza)",
       },
       {
-        nombre: "Frasco x 60",
+        nombre: "60 Cápsulas",
+        formato: "Frasco",
         precio: 62838,
         peso: "75g",
-        cantidad: "Cantidad x 60 cápsulas blandas",
+        cantidad: "60 cápsulas blandas (Frasco)",
       },
     ],
     gallery: [

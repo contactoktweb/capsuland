@@ -31,7 +31,7 @@ export default function Contact({ settings }: ContactProps) {
     {
       icon: MapPin,
       label: "Direccion",
-      value: settings?.address || "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B",
+      value: settings?.address || "Km 3,5 Via Funza - Siberia Parque Industrial San José Bodega 4B",
     },
     {
       icon: Phone,

@@ -48,7 +48,7 @@ export default function Footer({ settings }: FooterProps) {
               />
             </div>
             <p className="text-white/50 text-sm leading-relaxed mb-6">
-              {settings?.siteDescription || "Laboratorio farmaceutico especializado en la fabricacion de capsulas blandas de gelatina con estandares internacionales."}
+              {settings?.siteDescription || "Suplementos dietarios de la más alta calidad con certificación BPM INVIMA."}
             </p>
           </div>
 
@@ -98,7 +98,7 @@ export default function Footer({ settings }: FooterProps) {
               <div className="flex items-start gap-3">
                 <Icon icon="ph:map-pin-light" className="w-4 h-4 text-teal mt-0.5 shrink-0" />
                 <span className="text-sm text-white/50">
-                  {settings?.address || "Km 3,5 Via Funza - Siberia, Parque Ind. San Jose Bodega 4B"}
+                  {settings?.address || "Km 3,5 Via Funza - Siberia Parque Industrial San José Bodega 4B"}
                 </span>
               </div>
               <a
@@ -140,14 +140,6 @@ export default function Footer({ settings }: FooterProps) {
             >
               Desarrollado por K&T <Icon icon="ph:heart-fill" className="w-3 h-3 text-white" />
             </a>
-          </div>
-          <div className="flex gap-6">
-            <span className="text-xs text-white/30 hover:text-white/50 transition-colors cursor-pointer">
-              Politica de Privacidad
-            </span>
-            <span className="text-xs text-white/30 hover:text-white/50 transition-colors cursor-pointer">
-              Terminos y Condiciones
-            </span>
           </div>
         </div>
       </div>

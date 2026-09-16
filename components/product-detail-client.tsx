@@ -194,6 +194,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   </div>
                 )}
 
+                {/* Discount Badge */}
+                {activeOriginalPrice && activeOriginalPrice > activePrice && (
+                  <div className="absolute top-4 right-4 bg-orange text-white text-xs font-extrabold px-3 py-1 rounded-full shadow-sm z-10 uppercase tracking-wider">
+                    10% OFF
+                  </div>
+                )}
+
                 {/* Click hint */}
                 {images.length > 1 && (
                   <div className="absolute bottom-4 right-4 bg-white/80 backdrop-blur-sm text-charcoal/60 text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm">

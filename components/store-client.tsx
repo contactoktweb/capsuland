@@ -236,7 +236,7 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                               ? product.presentaciones[0].precio
                               : product.price
                           return pOriginal && pOriginal > pPrice ? (
-                            <div className="absolute top-3 left-3 bg-orange text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm z-10 uppercase tracking-wider">
+                            <div className="absolute top-3 right-3 bg-orange text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm z-10 uppercase tracking-wider">
                               10% OFF
                             </div>
                           ) : null

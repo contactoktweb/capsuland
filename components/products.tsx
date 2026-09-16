@@ -76,6 +76,11 @@ export default function Products({ products: propProducts, title: propTitle, sub
                         className="w-[85%] h-[85%] object-contain group-hover:scale-105 transition-transform duration-500"
                       />
                     )}
+                    {product.originalPrice && product.originalPrice > product.price && (
+                      <div className="absolute top-3 right-3 bg-orange text-white text-[10px] font-extrabold px-2.5 py-1 rounded-full shadow-sm z-10 uppercase tracking-wider">
+                        10% OFF
+                      </div>
+                    )}
                   </div>
                 </Link>
 

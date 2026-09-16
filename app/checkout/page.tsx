@@ -90,12 +90,17 @@ const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
         phone: formData.telefono,
         address: `${formData.direccion}, ${formData.ciudad}, ${formData.departamento}`,
         city: formData.ciudad,
+        departamento: formData.departamento,
+        notas: formData.notas,
         subtotal: totalPrice,
         total: totalPrice,
         items: items.map((item) => ({
           productId: item.product._id,
+          referencia: item.product.referencia,
+          presentation: item.product.selectedPresentation || "",
           quantity: item.quantity,
           price: item.product.price,
+          image: getMainImage(item.product) || "",
         })),
       }
 

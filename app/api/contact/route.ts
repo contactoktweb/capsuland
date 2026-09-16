@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { writeClient } from "@/sanity/lib/client"
+import { sendContactEmail } from "@/lib/resend"
 
 export async function POST(req: Request) {
   try {
@@ -25,6 +26,20 @@ export async function POST(req: Request) {
     }
 
     const result = await writeClient.create(doc)
+
+    // Enviar correo de notificación a coordinadorcomercial@capsuland.com
+    try {
+      await sendContactEmail({
+        name,
+        email,
+        phone,
+        company,
+        message,
+      })
+    } catch (emailErr) {
+      console.error("Error al enviar email de contacto con Resend:", emailErr)
+      // No bloqueamos la respuesta al cliente si el registro en Sanity ya se creó
+    }
 
     return NextResponse.json({ success: true, id: result._id })
   } catch (error: any) {

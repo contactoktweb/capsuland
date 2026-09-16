@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
+import { useSearchParams } from "next/navigation"
 import { motion } from "framer-motion"
 import { Icon } from "@iconify/react"
 import Link from "next/link"
@@ -10,30 +11,33 @@ import Footer from "@/components/footer"
 import { client } from "@/sanity/lib/client"
 import { globalSettingsQuery } from "@/sanity/lib/queries"
 
-export default function GraciasPage() {
+function GraciasContent({ settings }: { settings: any }) {
+  const searchParams = useSearchParams()
+  const orderIdParam = searchParams.get("order_id") || searchParams.get("external_reference")
+  const paymentStatus = searchParams.get("status") || searchParams.get("collection_status")
+  const paymentId = searchParams.get("payment_id") || searchParams.get("collection_id")
+
   const [orderNumber, setOrderNumber] = useState("")
-  const [settings, setSettings] = useState<any>(null)
   const [lastOrder, setLastOrder] = useState<any>(null)
 
   useEffect(() => {
-    const num = `CAP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
-    setOrderNumber(num)
-
-    client.fetch(globalSettingsQuery)
-      .then(setSettings)
-      .catch(err => console.error("Error fetching global settings in gracias page:", err))
+    if (orderIdParam) {
+      setOrderNumber(orderIdParam.startsWith("CAP-") ? orderIdParam : `#${orderIdParam.slice(-8).toUpperCase()}`)
+    } else {
+      const num = `CAP-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
+      setOrderNumber(num)
+    }
 
     try {
       const storedOrder = localStorage.getItem("capsuland_last_order")
       if (storedOrder) {
         setLastOrder(JSON.parse(storedOrder))
-        // Limpiamos la orden para que no se muestre por siempre si se recarga la página
         localStorage.removeItem("capsuland_last_order")
       }
     } catch (e) {
       console.error(e)
     }
-  }, [])
+  }, [orderIdParam])
 
   return (
     <main>
@@ -57,13 +61,28 @@ export default function GraciasPage() {
               <Icon icon="ph:check-circle-light" className="w-14 h-14 text-teal" />
             </motion.div>
 
+            {/* Mercado Pago Payment Status Badge */}
+            {paymentStatus === "approved" ? (
+              <div className="inline-flex items-center gap-2 bg-teal/10 text-teal border border-teal/20 text-xs font-bold px-4 py-1.5 rounded-full mb-4 uppercase tracking-wider">
+                <Icon icon="ph:check-circle-bold" className="w-4 h-4" />
+                Pago Aprobado por Mercado Pago
+              </div>
+            ) : paymentStatus === "pending" ? (
+              <div className="inline-flex items-center gap-2 bg-orange/10 text-orange border border-orange/20 text-xs font-bold px-4 py-1.5 rounded-full mb-4 uppercase tracking-wider">
+                <Icon icon="ph:clock-bold" className="w-4 h-4" />
+                Pago en Proceso (Mercado Pago)
+              </div>
+            ) : null}
+
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               className="text-4xl md:text-5xl font-bold text-charcoal mb-4"
             >
-              ¡Gracias por tu compra!
+              {paymentStatus === "approved"
+                ? "¡Pago exitoso y pedido confirmado!"
+                : "¡Gracias por tu compra!"}
             </motion.h1>
 
             <motion.p
@@ -72,7 +91,9 @@ export default function GraciasPage() {
               transition={{ delay: 0.4 }}
               className="text-lg text-charcoal/60 mb-8 max-w-lg"
             >
-              Tu pedido ha sido recibido exitosamente. Te contactaremos pronto para coordinar los detalles de envío.
+              {paymentStatus === "approved"
+                ? "Tu pago ha sido procesado de forma segura por Mercado Pago. Comenzaremos de inmediato la preparación de tus suplementos."
+                : "Tu pedido ha sido recibido exitosamente. Te contactaremos pronto para coordinar los detalles de envío."}
             </motion.p>
 
             {/* Order Number */}
@@ -90,6 +111,11 @@ export default function GraciasPage() {
                 <p className="text-2xl font-bold text-teal font-mono tracking-wider">
                   {orderNumber}
                 </p>
+                {paymentId && (
+                  <p className="text-[11px] text-charcoal/40 font-mono mt-1">
+                    Ref. Mercado Pago: #{paymentId}
+                  </p>
+                )}
                 <p className="text-xs text-charcoal/40 mt-2">
                   Guarda este número para hacer seguimiento a tu pedido
                 </p>
@@ -187,5 +213,28 @@ export default function GraciasPage() {
 
       <Footer settings={settings} />
     </main>
+  )
+}
+
+export default function GraciasPage() {
+  const [settings, setSettings] = useState<any>(null)
+
+  useEffect(() => {
+    client
+      .fetch(globalSettingsQuery)
+      .then(setSettings)
+      .catch((err) => console.error("Error fetching global settings in gracias page:", err))
+  }, [])
+
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-white">
+          <div className="w-8 h-8 border-3 border-teal border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
+      <GraciasContent settings={settings} />
+    </Suspense>
   )
 }

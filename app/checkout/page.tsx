@@ -112,10 +112,7 @@ const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
         body: JSON.stringify(payload),
       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || "Ocurrió un error al procesar el pedido.")
-      }
+      const resultData = await response.json()
 
       // Save order details to localStorage before clearing cart so success page can display them
       const orderDataToSave = {
@@ -126,11 +123,19 @@ const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
            image: getMainImage(i.product)
         })),
         total: totalPrice,
+        orderId: resultData.id,
       }
       localStorage.setItem("capsuland_last_order", JSON.stringify(orderDataToSave))
 
       clearCart()
-      router.push("/gracias")
+
+      // Si Mercado Pago devolvió URL de pago, redirigir a Mercado Pago
+      if (resultData.init_point) {
+        window.location.href = resultData.init_point
+        return
+      }
+
+      router.push(`/gracias?order_id=${resultData.id}`)
     } catch (err: any) {
       console.error("Checkout submission failed:", err)
       setErrorMsg(err.message || "No se pudo completar el pedido. Por favor, intenta de nuevo.")
@@ -498,15 +503,22 @@ const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
                   {isSubmitting ? (
                     <span className="flex items-center justify-center gap-2">
                       <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Procesando...
+                      Redirigiendo a Mercado Pago...
                     </span>
                   ) : (
                     <>
-                      <Icon icon="ph:check-circle-light" className="w-5 h-5" />
-                      Confirmar Pedido
+                      <Icon icon="ph:credit-card-light" className="w-5 h-5" />
+                      Pagar con Mercado Pago
                     </>
                   )}
                 </button>
+
+                <div className="mt-3 text-center">
+                  <span className="text-[11px] text-charcoal/50 flex items-center justify-center gap-1.5">
+                    <Icon icon="ph:shield-check-light" className="w-4 h-4 text-teal" />
+                    Pago 100% seguro con Mercado Pago (Tarjetas, PSE, Nequi)
+                  </span>
+                </div>
               </div>
             </div>
           </div>

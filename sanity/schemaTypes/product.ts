@@ -89,7 +89,12 @@ export default defineType({
             },
             {
               name: "precio",
-              title: "Precio (COP)",
+              title: "Precio con Descuento (COP)",
+              type: "number",
+            },
+            {
+              name: "precioOriginal",
+              title: "Precio Normal Tachado (COP)",
               type: "number",
             },
             {

@@ -228,6 +228,23 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                           </div>
                         )}
 
+                        {/* Discount Badge */}
+                        {(() => {
+                          const pOriginal =
+                            product.presentaciones && product.presentaciones.length > 0
+                              ? product.presentaciones[0].precioOriginal || product.originalPrice
+                              : product.originalPrice
+                          const pPrice =
+                            product.presentaciones && product.presentaciones.length > 0
+                              ? product.presentaciones[0].precio
+                              : product.price
+                          return pOriginal && pOriginal > pPrice ? (
+                            <div className="absolute top-3 left-3 bg-orange text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm z-10 uppercase tracking-wider">
+                              10% OFF
+                            </div>
+                          ) : null
+                        })()}
+
                         {/* Hover overlay */}
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 flex items-center justify-center">
                           <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 backdrop-blur-sm text-charcoal text-xs font-semibold px-4 py-2 rounded-full shadow-lg flex items-center gap-1.5">
@@ -276,6 +293,10 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                             product.presentaciones && product.presentaciones.length > 0
                               ? product.presentaciones[0].precio
                               : product.price
+                          const displayOriginalPrice =
+                            product.presentaciones && product.presentaciones.length > 0
+                              ? product.presentaciones[0].precioOriginal || product.originalPrice
+                              : product.originalPrice
 
                           return (
                             <>
@@ -287,20 +308,25 @@ export default function StoreClient({ products, categories }: StoreClientProps) 
                                 ) : (
                                   <>
                                     {hasPresentaciones && (
-                                      <span className="text-[10px] uppercase font-bold text-teal tracking-wider">
+                                      <span className="text-[10px] uppercase font-bold text-teal tracking-wider leading-none mb-1">
                                         Desde
                                       </span>
                                     )}
-                                    {product.originalPrice && !hasPresentaciones && (
-                                      <span className="text-[10px] text-charcoal/30 line-through decoration-charcoal/20">
-                                        ${product.originalPrice.toLocaleString("es-CO")}
-                                      </span>
+                                    {displayOriginalPrice && displayOriginalPrice > displayPrice && (
+                                      <div className="flex items-center gap-1.5 leading-none mb-0.5">
+                                        <span className="text-xs text-charcoal/40 line-through decoration-charcoal/25">
+                                          ${displayOriginalPrice.toLocaleString("es-CO")}
+                                        </span>
+                                        <span className="text-[10px] font-extrabold text-orange bg-orange/10 px-1 py-0.2 rounded">
+                                          -10%
+                                        </span>
+                                      </div>
                                     )}
-                                    <span className="text-xl font-bold text-charcoal">
+                                    <span className="text-xl font-bold text-charcoal leading-tight">
                                       ${displayPrice.toLocaleString("es-CO")}
                                     </span>
                                     {hasPresentaciones && (
-                                      <span className="text-[10px] font-medium text-teal flex items-center gap-1">
+                                      <span className="text-[10px] font-medium text-teal flex items-center gap-1 mt-0.5">
                                         <Icon icon="ph:stack-light" className="w-3 h-3" />
                                         30 y 60 Cápsulas
                                       </span>

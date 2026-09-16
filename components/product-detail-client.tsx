@@ -95,6 +95,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   )
 
   const activePrice = currentPresentation ? currentPresentation.precio : product.price
+  const activeOriginalPrice = currentPresentation
+    ? currentPresentation.precioOriginal || product.originalPrice
+    : product.originalPrice
   const activeCantidad =
     currentPresentation?.cantidad ||
     `${currentDisplay.versionTitle} (${currentDisplay.formatoTitle})`
@@ -134,7 +137,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
     slug: product.slug.current,
     referencia: `${cleanTitle} (${currentDisplay.versionTitle})`,
     price: activePrice,
-    originalPrice: product.originalPrice,
+    originalPrice: activeOriginalPrice,
     cantidad: `${currentDisplay.versionTitle} • ${currentDisplay.formatoTitle}`,
     registroInvima: product.registroInvima,
     beneficios: product.beneficios,
@@ -254,7 +257,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 </div>
               </div>
 
-              {/* Price & Current Version Info */}
+              {/* Price & Current Version Info with 10% Discount */}
               <div className="mb-6 flex flex-col sm:flex-row sm:items-end gap-3 sm:gap-4">
                 <div className="flex flex-col">
                   {(!activePrice || activePrice <= 0) ? (
@@ -263,10 +266,15 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                     </span>
                   ) : (
                     <>
-                      {product.originalPrice && product.originalPrice > activePrice && (
-                        <span className="text-sm text-charcoal/30 line-through decoration-charcoal/20 mb-[-4px]">
-                          ${product.originalPrice.toLocaleString("es-CO")}
-                        </span>
+                      {activeOriginalPrice && activeOriginalPrice > activePrice && (
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-sm md:text-base text-charcoal/40 line-through decoration-charcoal/30">
+                            ${activeOriginalPrice.toLocaleString("es-CO")}
+                          </span>
+                          <span className="text-[11px] font-extrabold text-orange bg-orange/10 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                            10% OFF
+                          </span>
+                        </div>
                       )}
                       <div className="flex items-baseline gap-2">
                         <span className="text-3xl md:text-4xl font-extrabold text-charcoal">
@@ -358,12 +366,21 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                           </div>
 
                           <div className="pt-2 border-t border-charcoal/5 flex items-baseline justify-between mt-auto">
-                            <span className="text-base font-extrabold text-charcoal">
-                              ${pres.precio ? pres.precio.toLocaleString("es-CO") : "0"}
-                            </span>
-                            <span className="text-[10px] uppercase font-bold text-charcoal/40">
-                              COP
-                            </span>
+                            <div className="flex flex-col">
+                              {pres.precioOriginal && pres.precioOriginal > pres.precio && (
+                                <span className="text-[11px] text-charcoal/40 line-through decoration-charcoal/25">
+                                  ${pres.precioOriginal.toLocaleString("es-CO")}
+                                </span>
+                              )}
+                              <span className="text-base font-extrabold text-charcoal">
+                                ${pres.precio ? pres.precio.toLocaleString("es-CO") : "0"}
+                              </span>
+                            </div>
+                            {pres.precioOriginal && pres.precioOriginal > pres.precio && (
+                              <span className="text-[10px] font-bold text-orange bg-orange/10 px-1.5 py-0.5 rounded">
+                                -10%
+                              </span>
+                            )}
                           </div>
                         </button>
                       )

@@ -56,6 +56,16 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: "departamento",
+      title: "Departamento",
+      type: "string",
+    }),
+    defineField({
+      name: "notas",
+      title: "Notas del Pedido",
+      type: "text",
+    }),
+    defineField({
       name: "items",
       title: "Productos Comprados",
       type: "array",
@@ -68,6 +78,11 @@ export default defineType({
               title: "Producto",
               type: "reference",
               to: [{ type: "product" }],
+            },
+            {
+              name: "presentation",
+              title: "Presentación",
+              type: "string",
             },
             {
               name: "quantity",
@@ -83,12 +98,13 @@ export default defineType({
           preview: {
             select: {
               title: "product.referencia",
+              presentation: "presentation",
               quantity: "quantity",
               price: "price",
             },
-            prepare({ title, quantity, price }) {
+            prepare({ title, presentation, quantity, price }) {
               return {
-                title: `${quantity}x ${title || 'Producto desconocido'}`,
+                title: `${quantity}x ${title || 'Producto desconocido'}${presentation ? ` (${presentation})` : ''}`,
                 subtitle: `$${price}`,
               }
             },
@@ -121,6 +137,21 @@ export default defineType({
         layout: "radio",
       },
       initialValue: "pendiente",
+    }),
+    defineField({
+      name: "paymentId",
+      title: "ID Transacción Mercado Pago",
+      type: "string",
+    }),
+    defineField({
+      name: "paymentMethod",
+      title: "Método de Pago",
+      type: "string",
+    }),
+    defineField({
+      name: "paidAt",
+      title: "Fecha de Pago Confirmado",
+      type: "datetime",
     }),
     defineField({
       name: "createdAt",

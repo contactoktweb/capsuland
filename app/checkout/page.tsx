@@ -114,6 +114,10 @@ const DEPARTMENTS = Object.keys(COLOMBIA_LOCATIONS)
 
       const resultData = await response.json()
 
+      if (!response.ok) {
+        throw new Error(resultData.error || "No se pudo procesar el pedido. Por favor intenta de nuevo.")
+      }
+
       // Save order details to localStorage before clearing cart so success page can display them
       const orderDataToSave = {
         items: items.map(i => ({

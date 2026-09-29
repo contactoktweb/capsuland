@@ -40,6 +40,7 @@ export async function POST(req: Request) {
           _type: "reference",
           _ref: refId,
         },
+        presentation: item.presentation || "",
         quantity: Number(item.quantity),
         price: Number(item.price),
       }
@@ -54,6 +55,8 @@ export async function POST(req: Request) {
       phone,
       address,
       city,
+      departamento: departamento || "",
+      notas: notas || "",
       items: sanityItems,
       subtotal: Number(subtotal),
       total: Number(total),
@@ -112,12 +115,17 @@ export async function POST(req: Request) {
           "http://localhost:3000"
         ).replace(/\/$/, "")
 
+        const isHttps = siteUrl.startsWith("https://")
+        const isPublicUrl = isHttps && !siteUrl.includes("localhost") && !siteUrl.includes("127.0.0.1")
+
         const prefResult = await preference.create({
           body: {
             items: items.map((item: any) => ({
-              id: item.productId || "capsuland-item",
-              title: item.referencia ? `${item.referencia} - pago desde capsuland` : "pago desde capsuland",
-              description: "pago desde capsuland",
+              id: String(item.productId || "capsuland-item"),
+              title: item.referencia
+                ? `Capsuland - ${item.referencia}`
+                : "Capsuland - Compra de Suplementos",
+              description: `Pago de pedido en Capsuland: ${item.referencia || "Suplemento natural"} (Orden #${result._id.slice(-6).toUpperCase()})`,
               quantity: Number(item.quantity) || 1,
               unit_price: Number(item.price),
               currency_id: "COP",
@@ -141,10 +149,17 @@ export async function POST(req: Request) {
               pending: `${siteUrl}/gracias?order_id=${result._id}&status=pending`,
               failure: `${siteUrl}/checkout?error=payment_failed&order_id=${result._id}`,
             },
-            auto_return: "approved",
-            statement_descriptor: "pago desde capsuland",
-            notification_url: `${siteUrl}/api/webhook/mercadopago`,
+            // auto_return requiere HTTPS según la API de Mercado Pago
+            ...(isHttps ? { auto_return: "approved" as const } : {}),
+            statement_descriptor: "CAPSULAND",
+            ...(isPublicUrl ? { notification_url: `${siteUrl}/api/webhook/mercadopago` } : {}),
             external_reference: result._id,
+            metadata: {
+              order_id: result._id,
+              motivo_pago: `Compra en Capsuland - Pedido #${result._id.slice(-6).toUpperCase()}`,
+              comercio: "Capsuland",
+              cliente: customerName,
+            },
           },
         })
 

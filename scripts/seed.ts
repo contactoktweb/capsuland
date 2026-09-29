@@ -94,7 +94,7 @@ async function seed() {
       subtitle: "Fabricamos capsulas blandas de gelatina con los mas altos estandares internacionales de calidad.",
       backgroundImage: heroImage,
       stats: [
-        { _key: "stat1", value: 20, suffix: "M+", label: "Capsulas / Ano" },
+        { _key: "stat1", value: 20, suffix: "M+", label: "Capsulas / Año" },
         { _key: "stat2", value: 15, suffix: "+", label: "Años Experiencia" },
         { _key: "stat3", value: 98, suffix: "%", label: "Satisfaccion" },
         { _key: "stat4", value: 2, suffix: "", label: "Certificaciones" },

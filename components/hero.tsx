@@ -58,7 +58,7 @@ export default function Hero({ data }: HeroProps) {
   const overlayOpacity = useTransform(scrollY, [0, 600], [0.5, 0.85])
 
   const defaultStats = [
-    { value: 20, suffix: "M+", label: "Capsulas / Ano" },
+    { value: 20, suffix: "M+", label: "Capsulas / Año" },
     { value: 15, suffix: "+", label: "Años Experiencia" },
     { value: 98, suffix: "%", label: "Satisfaccion" },
     { value: 2, suffix: "", label: "Certificaciones" },
@@ -206,20 +206,24 @@ export default function Hero({ data }: HeroProps) {
       >
         <div className="mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-2 md:grid-cols-4">
-            {stats.map((stat: any, i: number) => (
-              <div
-                key={stat.label}
-                className={`flex items-center gap-4 py-6 md:py-8 px-4 ${i < stats.length - 1 ? "md:border-r md:border-white/15" : ""
+            {stats.map((stat: any, i: number) => {
+              const label = stat.label?.replace(/Capsulas\s*\/\s*Ano/i, "Capsulas / Año") || stat.label
+              return (
+                <div
+                  key={stat.label || i}
+                  className={`flex items-center gap-4 py-6 md:py-8 px-4 ${
+                    i < stats.length - 1 ? "md:border-r md:border-white/15" : ""
                   } ${i < 2 ? "border-b md:border-b-0 border-white/15" : ""}`}
-              >
-                <span className="text-2xl md:text-3xl font-heading font-bold text-orange drop-shadow-[0_1px_6px_rgba(242,140,40,0.4)]">
-                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-                </span>
-                <span className="text-xs text-white/80 uppercase tracking-wider leading-tight font-sans">
-                  {stat.label}
-                </span>
-              </div>
-            ))}
+                >
+                  <span className="text-2xl md:text-3xl font-heading font-bold text-orange drop-shadow-[0_1px_6px_rgba(242,140,40,0.4)]">
+                    <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                  </span>
+                  <span className="text-xs text-white/80 uppercase tracking-wider leading-tight font-sans">
+                    {label}
+                  </span>
+                </div>
+              )
+            })}
           </div>
         </div>
       </motion.div>

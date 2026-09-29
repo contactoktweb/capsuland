@@ -39,6 +39,22 @@ function GraciasContent({ settings }: { settings: any }) {
     }
   }, [orderIdParam])
 
+  // Verificar y sincronizar el estado del pago con Sanity
+  useEffect(() => {
+    if (paymentId && orderIdParam) {
+      fetch("/api/checkout/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          paymentId,
+          orderId: orderIdParam,
+        }),
+      }).catch((err) => {
+        console.error("Error al verificar pago en Mercado Pago:", err)
+      })
+    }
+  }, [paymentId, orderIdParam])
+
   return (
     <main>
       <Header settings={settings} />
